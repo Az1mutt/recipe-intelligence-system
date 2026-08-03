@@ -22,25 +22,23 @@ Expected repository:
 
 `Az1mutt/recipe-intelligence-system`
 
-Expected base:
+Execution environment:
 
-the repository's latest authoritative default branch, after the pull request adding `AGENTS.md` has been merged.
+This task is intended to run in Codex Cloud from the repository environment and source branch selected by the user. Codex Cloud may present the checked-out source commit on an isolated local branch named `work`, with no configured Git remote, no `origin/HEAD`, and no remote-tracking references. That is expected platform behavior and is not a prerequisite failure.
+
+The user has selected repository `Az1mutt/recipe-intelligence-system` and source branch `docs/database-baseline` in the Codex Cloud composer. The platform-provided isolated `work` branch is the dedicated working branch for this run and satisfies the branching intent of `AGENTS.md`. Do not attempt to fetch, add a remote, switch branches, rename `work`, or contact GitHub from the terminal.
 
 Before editing:
 
-1. Confirm from the Codex/GitHub environment metadata that the connected repository is `Az1mutt/recipe-intelligence-system`.
-2. Refresh or start from the latest default branch.
-3. Confirm that `AGENTS.md` exists on that default branch.
-4. Read `AGENTS.md` and follow it.
-5. Confirm the working tree is clean.
+1. Confirm that the working tree is clean.
+2. Confirm that root `AGENTS.md` exists and read it completely.
+3. Confirm that both authoritative repository inputs listed above exist and are readable.
+4. Confirm that this task prompt is present at `docs/tasks/CODEX_RECIPE_INTELLIGENCE_DATABASE_BASELINE_PROMPT.md`.
+5. Record the current `HEAD` SHA for the final report.
 
-If the repository identity cannot be authoritatively confirmed, the default branch cannot be refreshed, or `AGENTS.md` is not on the default branch, stop without making changes and report the prerequisite that failed.
+Proceed when those repository-content checks pass. Absence of a Git remote, remote-tracking references, an authoritative default-branch reference, or a locally named `docs/database-baseline` branch must not stop the task in Codex Cloud.
 
-Use the dedicated branch prepared for this task:
-
-`docs/database-baseline`
-
-Do not work from a stale local `work` branch or from the unmerged AGENTS documentation commit.
+Stop without changes only if the working tree is dirty before editing, `AGENTS.md` is missing, either authoritative input is missing or unreadable, or the checked-out contents materially contradict this task's verified starting state.
 
 ---
 
@@ -145,7 +143,7 @@ The choice and initialization of the future active migration toolchain is explic
 
 ## Verified Repository Starting State
 
-Treat the following as the inspected repository state unless the refreshed default branch proves otherwise:
+Treat the following as the inspected repository state unless the checked-out Codex Cloud source commit proves otherwise:
 
 - `README.md` is blank or effectively empty.
 - `database/` exists only through `.gitkeep`.
@@ -157,7 +155,7 @@ Treat the following as the inspected repository state unless the refreshed defau
 - no `.gitignore` exists,
 - no secrets were found in the inspected snapshot.
 
-If the refreshed default branch differs, adapt only where necessary and report the difference. Do not overwrite valid newer documentation without reconciling it.
+If the checked-out source commit differs, adapt only where necessary and report the difference. Do not overwrite valid newer documentation without reconciling it.
 
 ---
 
@@ -674,7 +672,7 @@ Add reproducible Supabase database baseline
 
 ## Pull Request
 
-Create a draft pull request to the authoritative default branch.
+After the repository changes and validations are complete, use the Codex Cloud pull-request integration available to the task to create a draft pull request targeting `main`. The lack of a configured Git remote in the terminal is expected and must not block this platform action.
 
 Title:
 
@@ -700,9 +698,9 @@ Do not merge the pull request.
 
 Return:
 
-1. confirmed repository and base branch,
-2. created branch,
-3. commit SHA,
+1. confirmed Codex Cloud repository-content prerequisites and intended target branch `main`,
+2. execution branch or isolated work-checkout name,
+3. resulting commit SHA,
 4. draft PR URL and number,
 5. complete changed-file list,
 6. SHA-256 comparison for the source and copied bootstrap SQL,
