@@ -6,65 +6,132 @@ project:
   owner: "Recipe Intelligence technical specialist chat"
 
 status: "active"
-phase: "ingestion-contract-validation"
+phase: "batch-ingestion-validation"
 
 current_gate: >
-  Define and validate the YouTube/link ingestion and approval/promotion
-  contract against a small representative set of real candidates before any
-  bulk creator/channel import.
+  Prove that ingestion contract v1 remains reliable across a small heterogeneous
+  batch of real backlog URLs before any creator/channel-scale crawl. The easy
+  resolved-source path and the hard fallback path are now both verified; the
+  remaining gate is batch robustness rather than single-case correctness.
 
 current_state: >
-  The live Supabase/PostgreSQL architecture has expanded to 31 public tables
-  and now includes recipe intelligence, ingestion staging, a culinary
-  knowledge graph, learning/curation, and personal preference layers.
-  The recipe catalogue contains 235 recipe ideas, sources contain 129 records,
-  and recipe_inbox contains 190 items. Social ingestion has been established
-  from Instagram and Facebook exports, one Instagram candidate has reached
-  ready_for_review, and no bulk social promotion to recipes has been performed.
-  The culinary knowledge graph and recursive traversal are working, real
-  recipe-to-concept links exist, and the Supabase Security Advisor reports
-  zero lints. The repository documentation is materially stale relative to
-  this live architecture.
+  The live Supabase/PostgreSQL architecture has 33 public tables and currently
+  contains 243 recipes, 137 sources, 191 recipe_inbox items, 9 recipe_candidates,
+  and 10 recipe_inbox_evidence rows. Ingestion contract v1 is implemented with
+  explicit separation between intake workflow, content-resolution status,
+  evidence, 0..N recipe candidates, objective validation, dedupe, personal
+  preference evaluation, review policy, and promotion. Evidence provenance now
+  distinguishes source_content, creator_reference, external_reference, and
+  manual_context. Two end-to-end YouTube acceptance paths are verified:
+  Aaron & Claire resolved through metadata plus creator-written content and
+  auto-promoted 3/3 validated candidates; Caitlin Shoemaker's "5 Cozy Vegan
+  Weeknight Dinners" survived direct YouTube fetch failure via indexed metadata,
+  description, and creator references, remained truthfully partial at source
+  resolution, passed explicit review, and promoted 5/5 candidates. Shared-video
+  provenance is preserved through the common YouTube source rather than recipe
+  tags. Current graph/curation state includes 50 culinary concepts, 24 culinary
+  relationships, 16 recipe_concept links, 13 content collections, and 6 learning
+  topics. Personal preference behavior is live, including Coconut Milk
+  deprioritization without deleting objectively valid recipes. Recipe taxonomy
+  semantics were clarified during review: protein represents the dominant
+  meat/fish/tofu/cheese-style protein category and may legitimately be NULL,
+  while main_ingredient is the practical pantry/meal-planning dimension. The
+  Supabase Security Advisor currently reports zero lints. Repository
+  documentation outside Project State remains materially stale relative to the
+  live architecture.
 
 exact_next_action: >
-  Define the YouTube/link ingestion and promotion contract, then validate it
-  against a small representative set of real candidates. The contract must
-  cover exact-source resolution, authenticity/fusion handling, duplicate
-  detection, personal-preference scoring, review output, and explicit
-  promotion conditions.
+  Process a representative batch of 5-10 additional unprocessed Hárok3 URLs
+  through the full resolver -> evidence -> candidate -> validation -> dedupe ->
+  preference -> explicit-review pipeline. Deliberately include varied cases,
+  preferably at least one direct-fetch failure and one source where an exact
+  creator page is unavailable so the external_reference fallback can be tested.
+  Stop after the batch, review failure patterns and data quality, and decide
+  whether the system is ready for a creator-scale crawl such as Caitlin
+  Shoemaker / From My Bowl.
 
 blockers:
   - "No current technical blocker in Supabase."
-  - "High-quality YouTube/link ingestion depends on reliable source-content and creator/video identity resolution."
+  - >
+      Direct YouTube fetch is not consistently reliable, but this is now a known
+      resolver constraint rather than a blocker because indexed metadata,
+      creator-reference, and external-reference fallbacks are part of the
+      contract.
+  - >
+      Broad creator/channel crawling is intentionally gated until the next small
+      batch confirms robustness and review quality.
 
 dependencies:
   - project: "Recipe Intelligence System"
     workstream: "Cooking OS - Product & Intelligence Lab"
     dependency: >
-      Product recommendation logic should consume the implemented learning
-      and preference layers rather than recreate parallel concepts.
+      Product recommendation and learning logic should consume the implemented
+      recipe taxonomy, knowledge graph, learning/curation, and personal
+      preference layers rather than recreate parallel concepts.
+  - project: "External source ecosystem"
+    workstream: "Resolver inputs"
+    dependency: >
+      High-quality classification depends on legitimately accessible source
+      metadata/content, creator-written references, or trustworthy external
+      references. Access failures must remain explicit rather than being filled
+      with invented content.
 
 important_open_loops:
-  - "Validate the ingestion contract on a small representative batch."
-  - "Refresh GitHub schema/current-state documentation after the ingestion-contract milestone."
+  - "Run the 5-10 URL representative batch and evaluate batch-level failure modes."
+  - >
+      Test external_reference explicitly when exact creator/source content is
+      unavailable; never misrepresent an external recipe as the original source.
+  - >
+      Decide whether a normalized Creator entity is warranted after repeated
+      channel processing. For now creator identity lives in sources.author and
+      shared-video grouping is represented by the common source relation.
+  - >
+      If/when a Caitlin Shoemaker channel crawl begins, create or reuse a
+      channel-review content collection rather than provenance tags on recipes.
+  - >
+      Codify the clarified protein vs main_ingredient semantics in GitHub/agent
+      documentation so later automated classification follows the same rules.
+  - >
+      Treat prep_time, cook_time, servings, and similar fields as optional
+      enrichment: populate when reliably available, and allow future agents to
+      backfill them systematically.
+  - "Refresh README/schema/current-state GitHub documentation after the batch-ingestion gate."
   - "Review remaining social inbox items later."
   - "Recover unresolved Facebook saves where possible."
   - "Import and deduplicate Hárok5 later."
   - "Implement pantry/inventory later using culinary_concepts as the reference layer."
-  - "Build frontend/review UI only after the ingestion contract is proven."
+  - "Build frontend/review UI only after ingestion robustness is proven."
 
 portfolio:
   milestone: true
   signal: >
-    The project now demonstrates a 31-table PostgreSQL/Supabase intelligence
-    architecture with relational modeling, graph semantics and recursive
-    traversal, RLS/security design, ingestion staging, provenance separation,
-    human-in-the-loop promotion, and personalized recommendation foundations.
+    The project now demonstrates a verified, auditable ingestion architecture
+    that survives both normal source resolution and real-world source-access
+    failure. It can fan one source into multiple recipe candidates, preserve
+    evidence provenance, distinguish resolved vs partial source states, apply
+    validation/dedupe/personal preferences, support both auto-after-validation
+    and explicit-review promotion, and keep RLS/security clean. This moves the
+    system from schema design into proven end-to-end recipe-intelligence
+    ingestion and is a strong portfolio-grade architecture milestone.
+
+stale_or_unknown:
+  - >
+      README and broader schema/current-state documentation are stale relative
+      to the live 33-table architecture and ingestion-contract implementation.
+      They must not be treated as authoritative until refreshed.
+  - >
+      Creator-layer normalization is intentionally undecided; current evidence
+      is insufficient to justify a new entity before batch/channel usage proves
+      the need.
 
 verification:
-  last_verified: "2026-09-03"
+  last_verified: "2026-09-08"
   sources:
-    - "RECIPE_INTELLIGENCE_PROJECT_DELTA_FOR_CORE_2026-09-03.md"
+    - "Live Supabase verification: 33 public tables, 243 recipes, 137 sources, 191 inbox items, 9 candidates, 10 evidence rows."
+    - "Live Supabase Security Advisor: 0 lints."
+    - "Aaron & Claire YouTube acceptance test: completed/resolved, auto_after_validation, 3/3 candidates promoted."
+    - "Caitlin Shoemaker YouTube fallback acceptance test: completed/partial, explicit_review, 5/5 candidates promoted."
+    - "GitHub Project State prior version last verified 2026-09-03."
 
 sync:
   status: "synced"
