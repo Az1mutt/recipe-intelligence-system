@@ -1,0 +1,71 @@
+schema_version: "0.2"
+
+project:
+  name: "Recipe Intelligence System"
+  workstream: "Supabase, Database Architecture & Technical Implementation"
+  owner: "Recipe Intelligence technical specialist chat"
+
+status: "active"
+phase: "ingestion-contract-validation"
+
+current_gate: >
+  Define and validate the YouTube/link ingestion and approval/promotion
+  contract against a small representative set of real candidates before any
+  bulk creator/channel import.
+
+current_state: >
+  The live Supabase/PostgreSQL architecture has expanded to 31 public tables
+  and now includes recipe intelligence, ingestion staging, a culinary
+  knowledge graph, learning/curation, and personal preference layers.
+  The recipe catalogue contains 235 recipe ideas, sources contain 129 records,
+  and recipe_inbox contains 190 items. Social ingestion has been established
+  from Instagram and Facebook exports, one Instagram candidate has reached
+  ready_for_review, and no bulk social promotion to recipes has been performed.
+  The culinary knowledge graph and recursive traversal are working, real
+  recipe-to-concept links exist, and the Supabase Security Advisor reports
+  zero lints. The repository documentation is materially stale relative to
+  this live architecture.
+
+exact_next_action: >
+  Define the YouTube/link ingestion and promotion contract, then validate it
+  against a small representative set of real candidates. The contract must
+  cover exact-source resolution, authenticity/fusion handling, duplicate
+  detection, personal-preference scoring, review output, and explicit
+  promotion conditions.
+
+blockers:
+  - "No current technical blocker in Supabase."
+  - "High-quality YouTube/link ingestion depends on reliable source-content and creator/video identity resolution."
+
+dependencies:
+  - project: "Recipe Intelligence System"
+    workstream: "Cooking OS - Product & Intelligence Lab"
+    dependency: >
+      Product recommendation logic should consume the implemented learning
+      and preference layers rather than recreate parallel concepts.
+
+important_open_loops:
+  - "Validate the ingestion contract on a small representative batch."
+  - "Refresh GitHub schema/current-state documentation after the ingestion-contract milestone."
+  - "Review remaining social inbox items later."
+  - "Recover unresolved Facebook saves where possible."
+  - "Import and deduplicate Hárok5 later."
+  - "Implement pantry/inventory later using culinary_concepts as the reference layer."
+  - "Build frontend/review UI only after the ingestion contract is proven."
+
+portfolio:
+  milestone: true
+  signal: >
+    The project now demonstrates a 31-table PostgreSQL/Supabase intelligence
+    architecture with relational modeling, graph semantics and recursive
+    traversal, RLS/security design, ingestion staging, provenance separation,
+    human-in-the-loop promotion, and personalized recommendation foundations.
+
+verification:
+  last_verified: "2026-09-03"
+  sources:
+    - "RECIPE_INTELLIGENCE_PROJECT_DELTA_FOR_CORE_2026-09-03.md"
+
+sync:
+  status: "synced"
+  storage: ".project/state.yaml"
