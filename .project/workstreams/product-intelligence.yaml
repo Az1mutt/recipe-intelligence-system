@@ -5,53 +5,49 @@ state_scope: "workstream"
 project:
   name: "Recipe Intelligence System"
   workstream: "Product & Intelligence"
-  owner: "Cooking OS - Product & Intelligence Lab specialist chat"
+  owner: "unassigned"
 
-status: "needs_initialization"
-phase: "workstream-bootstrap"
+status: "future_unassigned"
+phase: "not_active"
 
 current_gate: >
-  Perform the first authoritative Project State sync from the Product &
-  Intelligence specialist chat so product behavior, agent roles and decision
-  semantics are represented independently from technical implementation.
+  None. This workstream should only be activated when a real specialist owner
+  exists for product behavior, agent roles, recommendation/learning logic,
+  review/promotion semantics, preferences, or human-in-the-loop UX.
 
 current_state: >
-  This workstream now has a dedicated Project State location, but its current
-  product/intelligence state has not yet been synchronized by its specialist
-  owner. Project OS must not infer current product decisions from the technical
-  architecture state.
+  A future Product & Intelligence boundary is reserved so product/agent behavior
+  does not become entangled with technical platform implementation. There is no
+  dedicated specialist chat for this workstream today. The manual recipes chat
+  is not treated as its owner.
 
 exact_next_action: >
-  The Product & Intelligence specialist chat should review its latest verified
-  context and populate this file with its current phase, gate, state, exact next
-  action, blockers, dependencies, open loops and portfolio signal.
+  Do nothing. Activate and initialize this workstream only when a dedicated
+  Product & Intelligence owner or sustained agent/product-design work actually exists.
 
-blockers:
-  - "Authoritative specialist state has not yet been synchronized to this file."
+blockers: []
 
 dependencies:
   - project: "Recipe Intelligence System"
     workstream: "Data & Platform Architecture"
     dependency: >
-      Product/agent behavior should consume the capabilities of the implemented
-      platform and express new requirements clearly when technical support is needed.
+      If activated later, this workstream should consume implemented platform
+      capabilities and express product requirements without duplicating schema/
+      ingestion implementation details.
 
 important_open_loops:
-  - "Define the current Product & Intelligence phase and gate."
-  - "Capture current agent roles and responsibilities."
-  - "Capture recommendation, learning, review and promotion behavior."
-  - "Capture human-in-the-loop boundaries and UX/workflow decisions."
-  - "Capture preference semantics and any product-level taxonomy rules."
-  - "Avoid duplicating technical schema/ingestion implementation details owned by Data & Platform Architecture."
+  - "Future: define agent roles and product behavior when there is a real need."
+  - "Future: define recommendation/learning/review semantics if they become a sustained separate workstream."
 
 portfolio:
   milestone: false
   signal: ""
 
 verification:
-  last_verified: ""
-  sources: []
+  last_verified: "2026-09-09"
+  sources:
+    - "Project OS clarification: no dedicated Product & Intelligence specialist chat currently exists."
 
 sync:
-  status: "pending"
+  status: "synced"
   storage: ".project/workstreams/product-intelligence.yaml"

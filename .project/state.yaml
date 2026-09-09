@@ -7,58 +7,57 @@ project:
   owner: "Project OS rollup"
 
 status: "active"
-phase: "multi-workstream-ingestion-and-intelligence-development"
+phase: "batch-ingestion-validation"
 
 current_gate: >
-  Keep the technical ingestion architecture progressing through batch validation
-  while initializing the Product & Intelligence workstream as a separate source
-  of truth for agent behavior, recommendation/learning logic and product policy.
+  Prove that the technical ingestion contract remains reliable across a small
+  heterogeneous batch of real backlog URLs before any creator/channel-scale crawl.
 
 current_state: >
-  Recipe Intelligence now operates as a multi-workstream project. Data &
-  Platform Architecture owns Supabase/PostgreSQL, ingestion contracts, resolver/
-  evidence/candidate flows, security and technical implementation. Product &
-  Intelligence owns what the system should do: recommendation and learning
-  behavior, agent roles, review/promotion semantics, preference meaning and
-  human-in-the-loop workflows. The technical workstream is current and verified;
-  the Product & Intelligence workstream has a dedicated state file but still
-  requires its first authoritative specialist synchronization.
+  Recipe Intelligence currently has one active specialist-owned workstream:
+  Data & Platform Architecture. It owns Supabase/PostgreSQL, schema, ingestion
+  contracts, resolver/evidence/candidate flows, security and technical
+  implementation. A separate Product & Intelligence boundary is reserved for
+  future use if/when a dedicated specialist chat or agent-product design
+  workstream actually exists, but it is not an active dependency or blocker.
+  The manual recipes chat is currently a user/curation workflow, not a Project
+  State owner.
 
 exact_next_action: >
-  Continue the technical 5-10 URL batch validation and, independently, have the
-  Product & Intelligence specialist chat perform its first state sync. After
-  both workstreams are current, regenerate this project rollup from both states.
+  Continue the technical 5-10 URL batch validation in Data & Platform
+  Architecture. Do not initialize a separate Product & Intelligence workstream
+  until there is a real owner and meaningful ongoing work for it.
 
-blockers:
-  - "Product & Intelligence workstream state has not yet been initialized by its specialist owner."
+blockers: []
 
 workstreams:
   - id: "data-platform-architecture"
     path: ".project/workstreams/data-platform-architecture.yaml"
     owner: "Recipe Intelligence technical specialist chat"
+    status: "active"
   - id: "product-intelligence"
     path: ".project/workstreams/product-intelligence.yaml"
-    owner: "Cooking OS - Product & Intelligence Lab specialist chat"
+    owner: "unassigned"
+    status: "future_unassigned"
 
 rollup_policy:
   specialist_writes_root: false
   generated_from:
     - ".project/workstreams/data-platform-architecture.yaml"
-    - ".project/workstreams/product-intelligence.yaml"
+  future_workstreams_do_not_block_rollup: true
 
 portfolio:
   milestone: true
   signal: >
-    The project now has both a proven technical ingestion foundation and a
-    cleaner operating boundary between platform implementation and product/
-    agent intelligence, reducing the risk of schema design and agent behavior
-    becoming entangled.
+    The project has a proven technical ingestion foundation and a clean future
+    boundary for product/agent-intelligence work without forcing a second active
+    workstream before it exists in practice.
 
 verification:
   last_verified: "2026-09-09"
   sources:
     - ".project/workstreams/data-platform-architecture.yaml"
-    - ".project/workstreams/product-intelligence.yaml"
+    - "Project OS clarification: no dedicated Product & Intelligence specialist chat currently exists."
 
 sync:
   status: "synced"
