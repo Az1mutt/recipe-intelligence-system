@@ -1,0 +1,97 @@
+schema_version: "0.2"
+
+state_scope: "workstream"
+
+project:
+  name: "Recipe Intelligence System"
+  workstream: "Data & Platform Architecture"
+  owner: "Recipe Intelligence technical specialist chat"
+
+status: "active"
+phase: "batch-ingestion-validation"
+
+current_gate: >
+  Prove that ingestion contract v1 remains reliable across a small heterogeneous
+  batch of real backlog URLs before any creator/channel-scale crawl. The easy
+  resolved-source path and the hard fallback path are both verified; the
+  remaining technical gate is batch robustness rather than single-case correctness.
+
+current_state: >
+  The live Supabase/PostgreSQL architecture has 33 public tables and currently
+  contains 243 recipes, 137 sources, 191 recipe_inbox items, 9 recipe_candidates,
+  and 10 recipe_inbox_evidence rows. Ingestion contract v1 is implemented with
+  explicit separation between intake workflow, content-resolution status,
+  evidence, 0..N recipe candidates, objective validation, dedupe, personal
+  preference evaluation, review policy, and promotion. Evidence provenance
+  distinguishes source_content, creator_reference, external_reference, and
+  manual_context. Two end-to-end YouTube acceptance paths are verified.
+  The Supabase Security Advisor reports zero lints. Repository documentation
+  outside Project State remains materially stale relative to the live architecture.
+
+exact_next_action: >
+  Process a representative batch of 5-10 additional unprocessed Hárok3 URLs
+  through the resolver -> evidence -> candidate -> validation -> dedupe ->
+  preference -> review pipeline. Include varied failure modes, stop after the
+  batch, review data quality and failure patterns, and decide whether the
+  technical ingestion layer is ready for creator-scale crawling.
+
+blockers:
+  - "No current technical blocker in Supabase."
+  - >
+      Direct YouTube fetch is not consistently reliable, but this is a known
+      resolver constraint rather than a blocker because fallback paths are part
+      of the ingestion contract.
+  - >
+      Broad creator/channel crawling is intentionally gated until the next
+      representative batch confirms technical robustness.
+
+dependencies:
+  - project: "Recipe Intelligence System"
+    workstream: "Product & Intelligence"
+    dependency: >
+      Product semantics, agent behavior, recommendation/learning logic and
+      human-in-the-loop policy should define what the platform must support;
+      the technical workstream should implement those requirements without
+      inventing a parallel product model.
+
+important_open_loops:
+  - "Run the 5-10 URL representative batch and evaluate batch-level failure modes."
+  - "Test external_reference explicitly when exact creator/source content is unavailable."
+  - "Decide whether a normalized Creator entity is warranted after repeated channel processing."
+  - "Codify protein vs main_ingredient semantics in technical/agent documentation."
+  - "Treat prep_time, cook_time, servings and similar fields as optional enrichment."
+  - "Refresh README/schema/current-state documentation after the batch-ingestion gate."
+  - "Review remaining social inbox items later."
+  - "Recover unresolved Facebook saves where possible."
+  - "Import and deduplicate Hárok5 later."
+  - "Implement pantry/inventory later using culinary_concepts as the reference layer."
+  - "Build frontend/review UI only after ingestion robustness is proven."
+
+portfolio:
+  milestone: true
+  signal: >
+    The project demonstrates a verified, auditable ingestion architecture that
+    survives both normal source resolution and real-world source-access failure,
+    preserves evidence provenance, supports 0..N candidates, validation/dedupe/
+    preferences/review, and keeps RLS/security clean.
+
+stale_or_unknown:
+  - >
+      README and broader schema/current-state documentation are stale relative
+      to the live 33-table architecture and ingestion-contract implementation.
+  - >
+      Creator-layer normalization is intentionally undecided pending more real
+      batch/channel evidence.
+
+verification:
+  last_verified: "2026-09-08"
+  sources:
+    - "Live Supabase verification: 33 public tables, 243 recipes, 137 sources, 191 inbox items, 9 candidates, 10 evidence rows."
+    - "Live Supabase Security Advisor: 0 lints."
+    - "Aaron & Claire YouTube acceptance test."
+    - "Caitlin Shoemaker YouTube fallback acceptance test."
+    - "Prior root Project State verified 2026-09-08."
+
+sync:
+  status: "synced"
+  storage: ".project/workstreams/data-platform-architecture.yaml"

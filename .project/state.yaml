@@ -1,137 +1,64 @@
 schema_version: "0.2"
 
+state_scope: "project_rollup"
+
 project:
   name: "Recipe Intelligence System"
-  workstream: "Supabase, Database Architecture & Technical Implementation"
-  owner: "Recipe Intelligence technical specialist chat"
+  owner: "Project OS rollup"
 
 status: "active"
-phase: "batch-ingestion-validation"
+phase: "multi-workstream-ingestion-and-intelligence-development"
 
 current_gate: >
-  Prove that ingestion contract v1 remains reliable across a small heterogeneous
-  batch of real backlog URLs before any creator/channel-scale crawl. The easy
-  resolved-source path and the hard fallback path are now both verified; the
-  remaining gate is batch robustness rather than single-case correctness.
+  Keep the technical ingestion architecture progressing through batch validation
+  while initializing the Product & Intelligence workstream as a separate source
+  of truth for agent behavior, recommendation/learning logic and product policy.
 
 current_state: >
-  The live Supabase/PostgreSQL architecture has 33 public tables and currently
-  contains 243 recipes, 137 sources, 191 recipe_inbox items, 9 recipe_candidates,
-  and 10 recipe_inbox_evidence rows. Ingestion contract v1 is implemented with
-  explicit separation between intake workflow, content-resolution status,
-  evidence, 0..N recipe candidates, objective validation, dedupe, personal
-  preference evaluation, review policy, and promotion. Evidence provenance now
-  distinguishes source_content, creator_reference, external_reference, and
-  manual_context. Two end-to-end YouTube acceptance paths are verified:
-  Aaron & Claire resolved through metadata plus creator-written content and
-  auto-promoted 3/3 validated candidates; Caitlin Shoemaker's "5 Cozy Vegan
-  Weeknight Dinners" survived direct YouTube fetch failure via indexed metadata,
-  description, and creator references, remained truthfully partial at source
-  resolution, passed explicit review, and promoted 5/5 candidates. Shared-video
-  provenance is preserved through the common YouTube source rather than recipe
-  tags. Current graph/curation state includes 50 culinary concepts, 24 culinary
-  relationships, 16 recipe_concept links, 13 content collections, and 6 learning
-  topics. Personal preference behavior is live, including Coconut Milk
-  deprioritization without deleting objectively valid recipes. Recipe taxonomy
-  semantics were clarified during review: protein represents the dominant
-  meat/fish/tofu/cheese-style protein category and may legitimately be NULL,
-  while main_ingredient is the practical pantry/meal-planning dimension. The
-  Supabase Security Advisor currently reports zero lints. Repository
-  documentation outside Project State remains materially stale relative to the
-  live architecture.
+  Recipe Intelligence now operates as a multi-workstream project. Data &
+  Platform Architecture owns Supabase/PostgreSQL, ingestion contracts, resolver/
+  evidence/candidate flows, security and technical implementation. Product &
+  Intelligence owns what the system should do: recommendation and learning
+  behavior, agent roles, review/promotion semantics, preference meaning and
+  human-in-the-loop workflows. The technical workstream is current and verified;
+  the Product & Intelligence workstream has a dedicated state file but still
+  requires its first authoritative specialist synchronization.
 
 exact_next_action: >
-  Process a representative batch of 5-10 additional unprocessed Hárok3 URLs
-  through the full resolver -> evidence -> candidate -> validation -> dedupe ->
-  preference -> explicit-review pipeline. Deliberately include varied cases,
-  preferably at least one direct-fetch failure and one source where an exact
-  creator page is unavailable so the external_reference fallback can be tested.
-  Stop after the batch, review failure patterns and data quality, and decide
-  whether the system is ready for a creator-scale crawl such as Caitlin
-  Shoemaker / From My Bowl.
+  Continue the technical 5-10 URL batch validation and, independently, have the
+  Product & Intelligence specialist chat perform its first state sync. After
+  both workstreams are current, regenerate this project rollup from both states.
 
 blockers:
-  - "No current technical blocker in Supabase."
-  - >
-      Direct YouTube fetch is not consistently reliable, but this is now a known
-      resolver constraint rather than a blocker because indexed metadata,
-      creator-reference, and external-reference fallbacks are part of the
-      contract.
-  - >
-      Broad creator/channel crawling is intentionally gated until the next small
-      batch confirms robustness and review quality.
+  - "Product & Intelligence workstream state has not yet been initialized by its specialist owner."
 
-dependencies:
-  - project: "Recipe Intelligence System"
-    workstream: "Cooking OS - Product & Intelligence Lab"
-    dependency: >
-      Product recommendation and learning logic should consume the implemented
-      recipe taxonomy, knowledge graph, learning/curation, and personal
-      preference layers rather than recreate parallel concepts.
-  - project: "External source ecosystem"
-    workstream: "Resolver inputs"
-    dependency: >
-      High-quality classification depends on legitimately accessible source
-      metadata/content, creator-written references, or trustworthy external
-      references. Access failures must remain explicit rather than being filled
-      with invented content.
+workstreams:
+  - id: "data-platform-architecture"
+    path: ".project/workstreams/data-platform-architecture.yaml"
+    owner: "Recipe Intelligence technical specialist chat"
+  - id: "product-intelligence"
+    path: ".project/workstreams/product-intelligence.yaml"
+    owner: "Cooking OS - Product & Intelligence Lab specialist chat"
 
-important_open_loops:
-  - "Run the 5-10 URL representative batch and evaluate batch-level failure modes."
-  - >
-      Test external_reference explicitly when exact creator/source content is
-      unavailable; never misrepresent an external recipe as the original source.
-  - >
-      Decide whether a normalized Creator entity is warranted after repeated
-      channel processing. For now creator identity lives in sources.author and
-      shared-video grouping is represented by the common source relation.
-  - >
-      If/when a Caitlin Shoemaker channel crawl begins, create or reuse a
-      channel-review content collection rather than provenance tags on recipes.
-  - >
-      Codify the clarified protein vs main_ingredient semantics in GitHub/agent
-      documentation so later automated classification follows the same rules.
-  - >
-      Treat prep_time, cook_time, servings, and similar fields as optional
-      enrichment: populate when reliably available, and allow future agents to
-      backfill them systematically.
-  - "Refresh README/schema/current-state GitHub documentation after the batch-ingestion gate."
-  - "Review remaining social inbox items later."
-  - "Recover unresolved Facebook saves where possible."
-  - "Import and deduplicate Hárok5 later."
-  - "Implement pantry/inventory later using culinary_concepts as the reference layer."
-  - "Build frontend/review UI only after ingestion robustness is proven."
+rollup_policy:
+  specialist_writes_root: false
+  generated_from:
+    - ".project/workstreams/data-platform-architecture.yaml"
+    - ".project/workstreams/product-intelligence.yaml"
 
 portfolio:
   milestone: true
   signal: >
-    The project now demonstrates a verified, auditable ingestion architecture
-    that survives both normal source resolution and real-world source-access
-    failure. It can fan one source into multiple recipe candidates, preserve
-    evidence provenance, distinguish resolved vs partial source states, apply
-    validation/dedupe/personal preferences, support both auto-after-validation
-    and explicit-review promotion, and keep RLS/security clean. This moves the
-    system from schema design into proven end-to-end recipe-intelligence
-    ingestion and is a strong portfolio-grade architecture milestone.
-
-stale_or_unknown:
-  - >
-      README and broader schema/current-state documentation are stale relative
-      to the live 33-table architecture and ingestion-contract implementation.
-      They must not be treated as authoritative until refreshed.
-  - >
-      Creator-layer normalization is intentionally undecided; current evidence
-      is insufficient to justify a new entity before batch/channel usage proves
-      the need.
+    The project now has both a proven technical ingestion foundation and a
+    cleaner operating boundary between platform implementation and product/
+    agent intelligence, reducing the risk of schema design and agent behavior
+    becoming entangled.
 
 verification:
-  last_verified: "2026-09-08"
+  last_verified: "2026-09-09"
   sources:
-    - "Live Supabase verification: 33 public tables, 243 recipes, 137 sources, 191 inbox items, 9 candidates, 10 evidence rows."
-    - "Live Supabase Security Advisor: 0 lints."
-    - "Aaron & Claire YouTube acceptance test: completed/resolved, auto_after_validation, 3/3 candidates promoted."
-    - "Caitlin Shoemaker YouTube fallback acceptance test: completed/partial, explicit_review, 5/5 candidates promoted."
-    - "GitHub Project State prior version last verified 2026-09-03."
+    - ".project/workstreams/data-platform-architecture.yaml"
+    - ".project/workstreams/product-intelligence.yaml"
 
 sync:
   status: "synced"
