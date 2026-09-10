@@ -1,31 +1,33 @@
 # Database baseline
 
-> **Existing live project warning:** `Recipes_decision_system` is already at this documented state. Never run the bootstrap, historical migrations, schema creation SQL, seed SQL, or migration-repair commands against it.
+> **Historical baseline warning:** `database/bootstrap/2026-08-03_current_schema.sql` is an immutable 15-table snapshot from 2026-08-03. The live `Recipes_decision_system` project has advanced materially beyond it and currently has 33 public tables. Never run this bootstrap, the historical migrations, schema-creation SQL, seed SQL, or migration-repair commands against the existing live project.
 
-## Artifact map and strategy
+## What this directory represents
 
-- `bootstrap/2026-08-03_current_schema.sql` is an immutable post-migration current-state snapshot, used exactly once only to bootstrap a brand-new empty Supabase environment.
-- `remote-history/` preserves four migrations already applied remotely. They are evidence outside any active migration path; their effects are already in the bootstrap and they must not be replayed afterward.
-- `seeds/README.md` records that no production seeds are approved. There is no executable seed step.
+- `bootstrap/2026-08-03_current_schema.sql` preserves the reconstructable database state at the 2026-08-03 cutover.
+- `remote-history/` preserves migration evidence already applied before/at that historical baseline.
+- `seeds/README.md` documents current seed policy/status. The live project now contains approved lookup values, but this repository does not yet maintain a complete executable current seed package.
 
-No Supabase CLI configuration, linkage, or active migration stream is initialized by this baseline.
+The bootstrap remains useful as historical evidence and as a reference for the original access/security foundation. It is **not** the current live schema and is not sufficient to reproduce today's Recipe Intelligence System.
 
-## Brand-new Supabase environment only
+## Existing live Supabase project
 
-The empty Supabase-provisioned database must already provide `auth.users`, `auth.uid()`, roles `anon` and `authenticated`, and schemas `auth` and `extensions`. The bootstrap creates or verifies `uuid-ossp` in `extensions`, then creates project-owned objects. PostgreSQL 17.6 is the documented target; `plpgsql` is needed only if separately replaying the historical `DO` block, which is not part of bootstrap.
+For `Recipes_decision_system`, use the live database and current documentation as the source of truth. Do not replay the historical bootstrap or remote-history files.
 
-Supply `NEW_SUPABASE_DATABASE_URL` only at runtime and never commit it. This command is only for a new, empty environment, must not target `Recipes_decision_system`, and was not executed during this task:
+Current references:
 
-```bash
-psql "$NEW_SUPABASE_DATABASE_URL" \
-  --set ON_ERROR_STOP=1 \
-  --file database/bootstrap/2026-08-03_current_schema.sql
-```
+- [current live state](../docs/database-current-state.md)
+- [database architecture](../docs/database-architecture.md)
+- [ingestion contract v1](../docs/ingestion-contract-v1.md)
+- [access model](../docs/database-access-model.md)
+- [baseline and migration policy](../docs/database-baseline-and-migrations.md)
 
-Apply the bootstrap exactly once. No seed step follows because no production seed values are confirmed.
+## New environments
+
+Do **not** use the 2026-08-03 bootstrap as though it reproduced the current application. Before a new environment is needed, create a fresh, reviewed current-schema/migration path that includes all post-baseline architecture: knowledge graph, learning/curation, preference, ingestion evidence/candidates, current lookup seeds, RLS/policies, and other live changes.
+
+Until that current migration/bootstrap path exists, the old bootstrap should be treated as historical evidence only.
 
 ## Future changes
 
-Create new, forward-only migrations after the 2026-08-03 baseline cutover. Selecting and initializing the future active migration toolchain is outside this baseline task. Historical reconciliation requires separate review before changing remote migration records or moving evidence into any active path.
-
-See [architecture](../docs/database-architecture.md), [access model](../docs/database-access-model.md), [baseline policy](../docs/database-baseline-and-migrations.md), [current state](../docs/database-current-state.md), [remote evidence](remote-history/README.md), and [seed status](seeds/README.md).
+Prefer forward-only, reviewed migrations from a known current baseline. Do not mutate historical migration evidence to make it appear that later live changes existed in 2026-08-03.

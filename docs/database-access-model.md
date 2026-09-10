@@ -11,14 +11,32 @@ Effective client access is:
 | Active `reader` | Read only |
 | Single active `owner` | Read and write |
 
-All 15 public tables have RLS enabled and `FORCE ROW LEVEL SECURITY` is false. Each has SELECT, INSERT, UPDATE, and DELETE policies: 60 public-table policies total. Reads call `private.has_recipe_access()`; writes call `private.is_recipe_owner()`. The partial unique index `recipe_access_one_active_owner_idx` permits at most one active owner.
+As verified on **2026-09-10**, all **33 public tables** have RLS enabled and `FORCE ROW LEVEL SECURITY` is false. Each public table has SELECT, INSERT, UPDATE, and DELETE policies: **132 public-table policies total**. Reads call `private.has_recipe_access()`; writes call `private.is_recipe_owner()`.
 
-`private.recipe_access_members` also has RLS enabled and a restrictive `no direct client access` policy whose `USING` and `WITH CHECK` are false. Direct privileges are revoked for client roles.
+`private.recipe_access_members` has RLS enabled and one restrictive `no direct client access` policy. Direct client privileges remain revoked. The partial unique owner constraint permits at most one active owner.
 
 ## Helpers, grants, and view
 
-Both helpers are SQL, `STABLE`, `SECURITY DEFINER`, and use an empty `search_path`. `authenticated` has function `EXECUTE`; `anon` and `PUBLIC` do not. The authenticated role has SELECT, INSERT, UPDATE, and DELETE table grants, but those grants only make an operation eligible: RLS still determines effective row access. Thus an unassigned authenticated user receives no rows and cannot write, while readers cannot pass owner write policies.
+Both authorization helpers are SQL, `STABLE`, `SECURITY DEFINER`, and use an empty `search_path`. `authenticated` can execute the helpers; `anon` and `PUBLIC` do not receive effective application access through them.
 
-`public.recipe_public_view` has `security_invoker=true`, so underlying RLS applies as the caller. Only `authenticated` receives SELECT on the view; `anon` and `PUBLIC` do not.
+Table grants and RLS are complementary: a grant only makes an operation eligible, while the applicable RLS policy separately determines whether rows are visible or writable. An unassigned authenticated user therefore receives no effective recipe access, while readers cannot pass owner write policies.
 
-SQL grants and RLS are complementary: a grant permits PostgreSQL to consider an operation, while an applicable RLS policy must separately allow its rows. Neither layer alone describes effective client access. The private registry is administered outside direct client access; this document does not propose a different security model.
+`public.recipe_public_view` is configured with `security_invoker=true`, so underlying RLS applies as the caller. It remains the secure read surface for authenticated recipe access; anonymous access is not part of the model.
+
+## Coverage of newer intelligence tables
+
+The same member-read / owner-write authorization pattern now covers the post-baseline architecture as well, including:
+
+- culinary knowledge graph tables
+- learning and content-collection tables
+- personal preference tables
+- `recipe_inbox_evidence`
+- `recipe_candidates`
+
+This means the ingestion and intelligence layers did not introduce a parallel or weaker client-access model.
+
+## Verification
+
+The Supabase Security Advisor reported **0 security lints** on 2026-09-10.
+
+The private registry is still intended to be administered outside direct client access. This document describes the current model; it does not propose multi-owner or public/anonymous access.

@@ -8,106 +8,115 @@ project:
   owner: "Recipe Intelligence technical specialist chat"
 
 status: "active"
-phase: "batch-ingestion-validation"
+phase: "creator-scale-ingestion-pilot"
 
 current_gate: >
-  Complete review of the staged heterogeneous Hárok3 validation batch and prove
-  that ingestion contract v1 behaves correctly across direct recipe pages,
-  duplicate/enrichment cases, meaningful variants, non-recipe content, and
-  partial-source fallback before any creator/channel-scale crawl.
+  Prove that ingestion contract v1 remains reliable when applied across a
+  bounded creator/channel cohort rather than isolated URLs. The heterogeneous
+  six-source Hárok3 batch gate is closed successfully: direct pages, duplicate
+  enrichment, meaningful variants, non-recipe content, partial-source fallback,
+  and merge semantics all behaved as intended.
 
 current_state: >
   The live Supabase/PostgreSQL architecture has 33 public tables and currently
-  contains 246 recipes, 141 sources, 191 recipe_inbox items, 14 recipe_candidates,
-  17 recipe_inbox_evidence rows, and 52 culinary concepts. Five of the six staged
-  Hárok3 validation sources are now dispositioned. Perfect Pot Roast enriched an
-  exact existing duplicate; the cheesecake water-bath article correctly produced
-  zero recipe candidates; Japanese-Style Mapo Tofu was preserved as a meaningful
-  Japanese variant; Creamy Spinach and Mushroom Gnocchi was promoted as a unique
-  recipe; and Creamy Sausage Gnocchi was promoted with Bravčové mäso as protein,
-  Gnocchi as main_ingredient, and Italian Sausage as a specific ingredient
-  culinary concept for ingredient-driven retrieval. The latter establishes the
-  broader modeling principle that concrete ingredients such as Italian sausage
-  or guanciale belong in recipe_concepts rather than overloading recipe tags or
-  the coarse protein dimension. The remaining staged source is the Tasty YouTube
-  item, which remains truthfully partial and uses external_reference fallback
-  evidence. Supabase Security Advisor remains clean from the latest verified
-  check. Repository documentation outside Project State is still materially
-  stale and will be refreshed when this batch gate closes.
+  contains 246 recipes, 142 sources, 191 recipe_inbox items, 14 recipe_candidates,
+  17 recipe_inbox_evidence rows, and 52 culinary concepts. Ingestion contract v1
+  is implemented and has now passed both single-source acceptance tests and a
+  heterogeneous six-source batch. The completed batch produced: one exact
+  duplicate enrichment (Perfect Pot Roast -> Pot Roast), one non-recipe article
+  with zero recipe candidates (cheesecake water-bath technique), three unique
+  recipe promotions (Japanese-Style Mapo Tofu, Creamy Spinach and Mushroom
+  Gnocchi, Creamy Sausage Gnocchi), and one merge candidate where partial Tasty
+  YouTube evidence safely enriched existing Pasta primavera without inventing
+  unsupported details. The Tasty source remains truthfully partial and its
+  third-party fallback remains external_reference evidence only. Ingredient-level
+  retrieval semantics were refined during review: protein keeps the known meat
+  species, main_ingredient remains a practical pantry/meal-planning dimension,
+  and specific ingredients or forms such as Mleté mäso, Italian Sausage, or
+  future Guanciale belong in culinary concepts rather than recipe tags. All 33
+  public tables have RLS enabled, recipe_public_view remains the secure read
+  surface, and the latest Supabase Security Advisor check reports zero lints.
+  Stable repository documentation is being refreshed on a dedicated branch and
+  draft PR because AGENTS.md prohibits direct documentation pushes to main.
 
 exact_next_action: >
-  Review the final staged candidate, One-Pot Pasta Primavera, and decide whether
-  it should merge into the existing Pasta primavera recipe or remain a distinct
-  recipe/variant. Preserve the partial-source and external_reference provenance
-  semantics. Then close the six-source batch, review batch-level failure patterns,
-  update stable technical documentation, and decide readiness for creator-scale
-  crawling.
+  Run a bounded creator/channel-scale pilot, using Caitlin Shoemaker / From My
+  Bowl as the first natural candidate. First enumerate and stage a manageable
+  cohort of channel videos with creator identity and source grouping preserved,
+  then resolve candidates through the same evidence -> validation -> dedupe ->
+  preference -> explicit-review pipeline. Do not bulk auto-promote the channel;
+  use the pilot to validate repeated-source handling, creator grouping, batch
+  review quality, and whether a normalized Creator entity is actually needed.
 
 blockers:
   - "No current technical blocker in Supabase."
   - >
-      Direct YouTube fetch is not consistently reliable, but this is a known
-      resolver constraint rather than a blocker because source_content,
-      creator_reference, and external_reference fallback semantics are working.
-  - >
-      Broad creator/channel crawling is intentionally gated until the current
-      representative batch is fully reviewed and closed.
+      Direct YouTube fetch remains inconsistent, but this is now a proven
+      resolver constraint rather than a blocker because partial resolution and
+      external_reference fallback semantics survived batch validation.
 
 dependencies:
   - project: "External source ecosystem"
     workstream: "Resolver inputs"
     dependency: >
-      High-quality classification depends on legitimately accessible source
-      metadata/content, creator-written references, or trustworthy external
-      references. Access failures must remain explicit rather than being filled
-      with invented content.
+      Creator-scale quality depends on legitimately accessible metadata/content,
+      creator-written references, or trustworthy external references. Failed or
+      partial acquisition must remain explicit and must never be replaced with
+      invented source content.
 
 important_open_loops:
-  - "Finish review of One-Pot Pasta Primavera, the final candidate in the current six-source batch."
-  - "Evaluate batch-level failure modes and decide readiness for creator/channel-scale crawling."
+  - "Run the first bounded creator/channel-scale ingestion pilot."
   - >
-      Decide whether a normalized Creator entity is warranted after repeated
-      channel processing; shared-video provenance already works through the
-      common source relation.
+      Decide whether a normalized Creator entity is warranted after the pilot;
+      for now creator identity remains on sources.author and source grouping is
+      sufficient for provenance.
   - >
-      Codify protein vs main_ingredient semantics, Mleté mäso usage, and specific
-      ingredient concepts such as Italian Sausage in technical/agent documentation
-      when the current batch gate closes.
+      Decide whether channel-review content collections should be created for
+      creators such as Caitlin Shoemaker / From My Bowl when channel processing
+      begins; do not use recipe tags for provenance.
+  - >
+      Continue using culinary concepts for specific ingredient retrieval while
+      keeping protein and main_ingredient coarse and purposeful.
   - >
       Treat prep_time, cook_time, servings and similar fields as optional
       enrichment populated only when reliably supported by evidence.
-  - "Refresh README/schema/current-state documentation after the batch-ingestion gate."
   - "Review remaining social inbox items later."
   - "Recover unresolved Facebook saves where possible."
   - "Import and deduplicate Hárok5 later."
   - "Implement pantry/inventory later using culinary_concepts as the reference layer."
-  - "Build frontend/review UI only after ingestion robustness is proven."
+  - "Build frontend/review UI only after creator-scale ingestion behavior is proven."
 
 portfolio:
   milestone: true
   signal: >
-    The project now demonstrates not only happy-path ingestion but real batch
-    behavior: duplicate enrichment, meaningful variant preservation, non-recipe
-    rejection, external-reference fallback with provenance separation, practical
-    taxonomy evolution, and ingredient-level retrieval through the knowledge graph
-    without polluting coarse recipe taxonomies.
+    The project has crossed from schema and single-case validation into a proven
+    heterogeneous ingestion pipeline. It now demonstrates auditable provenance,
+    partial-source truthfulness, non-recipe rejection, duplicate enrichment,
+    meaningful variant preservation, safe merge behavior, personal preference
+    handling, and ingredient-level knowledge modeling under RLS. The next
+    portfolio-relevant proof point is creator/channel-scale operation.
 
 stale_or_unknown:
   - >
-      README and broader schema/current-state documentation are stale relative
-      to the live 33-table architecture and ingestion-contract implementation.
+      Root project rollup is owned by Project OS and is not written by this
+      specialist workstream; it may lag until the rollup owner reconciles this
+      phase change.
   - >
-      Creator-layer normalization remains intentionally undecided pending more
-      real batch/channel evidence.
+      Creator-layer normalization remains intentionally undecided pending the
+      first real creator/channel pilot.
 
 verification:
   last_verified: "2026-09-10"
   sources:
-    - "Live Supabase verification: 246 recipes, 141 sources, 14 candidates, 17 evidence rows, 52 culinary concepts."
-    - "Creamy Sausage Gnocchi promoted as unique with Italian Sausage ingredient concept; source and inbox completed."
-    - "Current six-source Hárok3 batch: 5 sources dispositioned, 1 staged recipe candidate remains in explicit review."
-    - "Tasty YouTube fallback remains partial with external_reference evidence role."
+    - "Live Supabase verification: 33 public tables, 246 recipes, 142 sources, 191 inbox items, 14 candidates, 17 evidence rows, 52 culinary concepts."
+    - "All six Hárok3 validation sources are completed."
+    - "Perfect Pot Roast: duplicate/exact_duplicate and existing Pot Roast enriched."
+    - "Cheesecake water-bath article: resolved non-recipe, zero candidates."
+    - "Japanese-Style Mapo Tofu, Creamy Spinach and Mushroom Gnocchi, and Creamy Sausage Gnocchi: promoted unique recipes."
+    - "One-Pot Pasta Primavera: duplicate/merge_candidate; Tasty source linked to existing Pasta primavera; source remains partial and external_reference provenance preserved."
+    - "Live Supabase Security Advisor: 0 lints."
 
 sync:
-  status: "synced"
+  status: "pending_review"
   storage: ".project/workstreams/data-platform-architecture.yaml"
+  branch: "docs/ingestion-v1-batch-gate-2026-09-10"
