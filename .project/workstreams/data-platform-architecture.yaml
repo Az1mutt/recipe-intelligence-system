@@ -18,33 +18,30 @@ current_gate: >
 
 current_state: >
   The live Supabase/PostgreSQL architecture has 33 public tables and currently
-  contains 244 recipes, 139 sources, 191 recipe_inbox items, 14 recipe_candidates,
+  contains 245 recipes, 140 sources, 191 recipe_inbox items, 14 recipe_candidates,
   17 recipe_inbox_evidence rows, and 51 culinary concepts. A six-source Hárok3
-  validation batch has been staged. Three sources are already dispositioned:
-  Perfect Pot Roast was correctly recognized as an exact duplicate and enriched
-  the existing Pot Roast recipe rather than creating a second recipe; the
-  cheesecake water-bath article correctly resolved as technique content with
-  zero recipe candidates; and Just One Cookbook's Japanese-Style Mapo Tofu
-  (Mabo Dofu) was retained as a meaningful Japanese variant rather than merged
-  with the existing Chinese Mapo Tofu. The Mabo Dofu review also established a
-  taxonomy rule: when the meat species is known, protein keeps the specific
-  species while ground-meat form is modeled as the culinary concept "Mleté mäso".
-  The Tasty YouTube source remains truthfully partial and has already exercised
-  the external_reference evidence role using a third-party fallback rather than
-  misrepresenting it as original source content. Three recipe candidates remain
-  in explicit review: Creamy Spinach and Mushroom Gnocchi, Creamy Sausage
-  Gnocchi, and One-Pot Pasta Primavera. Supabase Security Advisor currently
-  reports zero lints. Repository documentation outside Project State remains
-  materially stale relative to the live architecture and will be refreshed once
-  this batch gate closes.
+  validation batch is in explicit review. Four sources are now dispositioned:
+  Perfect Pot Roast was correctly treated as an exact duplicate and enriched the
+  existing Pot Roast recipe; the cheesecake water-bath article resolved as
+  technique content with zero recipe candidates; Japanese-Style Mapo Tofu
+  (Mabo Dofu) was retained as a meaningful Japanese variant with the culinary
+  concept "Mleté mäso" while keeping protein as Bravčové mäso; and Creamy
+  Spinach and Mushroom Gnocchi was promoted as a unique American-Italian recipe
+  with Gnocchi as main_ingredient, Restované as the closest preparation type,
+  and no freezer tag because the source explicitly advises against freezing the
+  cream-based sauce. The Tasty YouTube source remains truthfully partial and has
+  already exercised the external_reference evidence role. Two recipe candidates
+  remain in explicit review: Creamy Sausage Gnocchi and One-Pot Pasta Primavera.
+  Supabase Security Advisor currently reports zero lints. Repository
+  documentation outside Project State remains materially stale relative to the
+  live architecture and will be refreshed when this batch gate closes.
 
 exact_next_action: >
-  Continue explicit review of the three remaining staged batch candidates,
-  starting with Creamy Spinach and Mushroom Gnocchi. For each item, decide
-  promote vs merge vs reject, preserve dedupe and provenance semantics, and
-  finish the six-source batch. Then review batch-level failure patterns and
-  decide whether the technical ingestion layer is ready for creator-scale
-  crawling.
+  Continue explicit review with Creamy Sausage Gnocchi, then review One-Pot
+  Pasta Primavera. For each item, decide promote vs merge vs reject, preserve
+  dedupe and provenance semantics, finish the six-source batch, review batch-level
+  failure patterns, and decide whether the technical ingestion layer is ready
+  for creator-scale crawling.
 
 blockers:
   - "No current technical blocker in Supabase."
@@ -66,7 +63,7 @@ dependencies:
       with invented content.
 
 important_open_loops:
-  - "Finish review of the remaining three candidates in the current six-source Hárok3 validation batch."
+  - "Finish review of Creamy Sausage Gnocchi and One-Pot Pasta Primavera."
   - "Evaluate batch-level failure modes and decide readiness for creator/channel-scale crawling."
   - >
       Decide whether a normalized Creator entity is warranted after repeated
@@ -104,11 +101,11 @@ stale_or_unknown:
 verification:
   last_verified: "2026-09-10"
   sources:
-    - "Live Supabase verification: 33 public tables, 244 recipes, 139 sources, 191 inbox items, 14 candidates, 17 evidence rows, 51 culinary concepts."
+    - "Live Supabase verification: 33 public tables, 245 recipes, 140 sources, 191 inbox items, 14 candidates, 17 evidence rows, 51 culinary concepts."
     - "Live Supabase Security Advisor: 0 lints."
-    - "Current six-source Hárok3 batch: 3 sources dispositioned, 3 recipe candidates still in explicit review."
+    - "Current six-source Hárok3 batch: 4 sources dispositioned, 2 recipe candidates still in explicit review."
+    - "Creamy Spinach and Mushroom Gnocchi promoted as unique; Restované retained; no freezer tag."
     - "Tasty YouTube fallback verified with external_reference evidence role while source resolution remains partial."
-    - "Japanese-Style Mapo Tofu promoted as distinct variant with Mleté mäso culinary concept."
 
 sync:
   status: "synced"
