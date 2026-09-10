@@ -36,17 +36,17 @@ current_state: >
   future Guanciale belong in culinary concepts rather than recipe tags. All 33
   public tables have RLS enabled, recipe_public_view remains the secure read
   surface, and the latest Supabase Security Advisor check reports zero lints.
-  Stable repository documentation is being refreshed on a dedicated branch and
-  draft PR because AGENTS.md prohibits direct documentation pushes to main.
+  Stable repository documentation for the ingestion contract and live database
+  state was refreshed and merged to main in PR #7 on 2026-09-10.
 
 exact_next_action: >
-  Run a bounded creator/channel-scale pilot, using Caitlin Shoemaker / From My
-  Bowl as the first natural candidate. First enumerate and stage a manageable
-  cohort of channel videos with creator identity and source grouping preserved,
-  then resolve candidates through the same evidence -> validation -> dedupe ->
-  preference -> explicit-review pipeline. Do not bulk auto-promote the channel;
-  use the pilot to validate repeated-source handling, creator grouping, batch
-  review quality, and whether a normalized Creator entity is actually needed.
+  Run a bounded creator/channel-scale pilot using Aaron & Claire as the first
+  creator cohort. First enumerate and stage a manageable set of channel videos
+  with creator identity and source grouping preserved, then resolve candidates
+  through the same evidence -> validation -> dedupe -> preference -> explicit-
+  review pipeline. Do not bulk auto-promote the channel; use the pilot to validate
+  repeated-source handling, creator grouping, batch review quality, and whether
+  a normalized Creator entity or stronger agent orchestration is actually needed.
 
 blockers:
   - "No current technical blocker in Supabase."
@@ -65,15 +65,19 @@ dependencies:
       invented source content.
 
 important_open_loops:
-  - "Run the first bounded creator/channel-scale ingestion pilot."
+  - "Run the first bounded Aaron & Claire creator/channel-scale ingestion pilot."
+  - >
+      Use the pilot to define an Agent Contract v1: which steps can be delegated
+      to discovery/resolver/classification/QA/promotion agents, what each agent
+      may write, and which ambiguous decisions must escalate to this specialist
+      chat or the user.
   - >
       Decide whether a normalized Creator entity is warranted after the pilot;
       for now creator identity remains on sources.author and source grouping is
       sufficient for provenance.
   - >
-      Decide whether channel-review content collections should be created for
-      creators such as Caitlin Shoemaker / From My Bowl when channel processing
-      begins; do not use recipe tags for provenance.
+      Reuse the existing Aaron & Claire channel-review content collection for
+      creator-scale review; do not use recipe tags for provenance.
   - >
       Continue using culinary concepts for specific ingredient retrieval while
       keeping protein and main_ingredient coarse and purposeful.
@@ -94,7 +98,8 @@ portfolio:
     partial-source truthfulness, non-recipe rejection, duplicate enrichment,
     meaningful variant preservation, safe merge behavior, personal preference
     handling, and ingredient-level knowledge modeling under RLS. The next
-    portfolio-relevant proof point is creator/channel-scale operation.
+    portfolio-relevant proof point is creator/channel-scale operation and a
+    repeatable agent contract for delegated ingestion.
 
 stale_or_unknown:
   - >
@@ -104,6 +109,11 @@ stale_or_unknown:
   - >
       Creator-layer normalization remains intentionally undecided pending the
       first real creator/channel pilot.
+  - >
+      Repository-level AGENTS.md still contains the older conservative no-auto-
+      merge workflow until the Project OS/Core rules are rewritten across repos.
+      User explicitly approved automatic merge for verified stable changes in
+      this workstream on 2026-09-10.
 
 verification:
   last_verified: "2026-09-10"
@@ -115,8 +125,9 @@ verification:
     - "Japanese-Style Mapo Tofu, Creamy Spinach and Mushroom Gnocchi, and Creamy Sausage Gnocchi: promoted unique recipes."
     - "One-Pot Pasta Primavera: duplicate/merge_candidate; Tasty source linked to existing Pasta primavera; source remains partial and external_reference provenance preserved."
     - "Live Supabase Security Advisor: 0 lints."
+    - "Documentation refresh merged to main via PR #7, merge commit 5cf56e182e6e70ac3c0e7c9dfc2e824ef0153042."
+    - "User selected Aaron & Claire as the first creator-scale pilot and approved automatic merge of verified stable changes."
 
 sync:
-  status: "pending_review"
+  status: "synced"
   storage: ".project/workstreams/data-platform-architecture.yaml"
-  branch: "docs/ingestion-v1-batch-gate-2026-09-10"
