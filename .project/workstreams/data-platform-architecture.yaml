@@ -18,30 +18,30 @@ current_gate: >
 
 current_state: >
   The live Supabase/PostgreSQL architecture has 33 public tables and currently
-  contains 245 recipes, 140 sources, 191 recipe_inbox items, 14 recipe_candidates,
-  17 recipe_inbox_evidence rows, and 51 culinary concepts. A six-source Hárok3
-  validation batch is in explicit review. Four sources are now dispositioned:
-  Perfect Pot Roast was correctly treated as an exact duplicate and enriched the
-  existing Pot Roast recipe; the cheesecake water-bath article resolved as
-  technique content with zero recipe candidates; Japanese-Style Mapo Tofu
-  (Mabo Dofu) was retained as a meaningful Japanese variant with the culinary
-  concept "Mleté mäso" while keeping protein as Bravčové mäso; and Creamy
-  Spinach and Mushroom Gnocchi was promoted as a unique American-Italian recipe
-  with Gnocchi as main_ingredient, Restované as the closest preparation type,
-  and no freezer tag because the source explicitly advises against freezing the
-  cream-based sauce. The Tasty YouTube source remains truthfully partial and has
-  already exercised the external_reference evidence role. Two recipe candidates
-  remain in explicit review: Creamy Sausage Gnocchi and One-Pot Pasta Primavera.
-  Supabase Security Advisor currently reports zero lints. Repository
-  documentation outside Project State remains materially stale relative to the
-  live architecture and will be refreshed when this batch gate closes.
+  contains 246 recipes, 141 sources, 191 recipe_inbox items, 14 recipe_candidates,
+  17 recipe_inbox_evidence rows, and 52 culinary concepts. Five of the six staged
+  Hárok3 validation sources are now dispositioned. Perfect Pot Roast enriched an
+  exact existing duplicate; the cheesecake water-bath article correctly produced
+  zero recipe candidates; Japanese-Style Mapo Tofu was preserved as a meaningful
+  Japanese variant; Creamy Spinach and Mushroom Gnocchi was promoted as a unique
+  recipe; and Creamy Sausage Gnocchi was promoted with Bravčové mäso as protein,
+  Gnocchi as main_ingredient, and Italian Sausage as a specific ingredient
+  culinary concept for ingredient-driven retrieval. The latter establishes the
+  broader modeling principle that concrete ingredients such as Italian sausage
+  or guanciale belong in recipe_concepts rather than overloading recipe tags or
+  the coarse protein dimension. The remaining staged source is the Tasty YouTube
+  item, which remains truthfully partial and uses external_reference fallback
+  evidence. Supabase Security Advisor remains clean from the latest verified
+  check. Repository documentation outside Project State is still materially
+  stale and will be refreshed when this batch gate closes.
 
 exact_next_action: >
-  Continue explicit review with Creamy Sausage Gnocchi, then review One-Pot
-  Pasta Primavera. For each item, decide promote vs merge vs reject, preserve
-  dedupe and provenance semantics, finish the six-source batch, review batch-level
-  failure patterns, and decide whether the technical ingestion layer is ready
-  for creator-scale crawling.
+  Review the final staged candidate, One-Pot Pasta Primavera, and decide whether
+  it should merge into the existing Pasta primavera recipe or remain a distinct
+  recipe/variant. Preserve the partial-source and external_reference provenance
+  semantics. Then close the six-source batch, review batch-level failure patterns,
+  update stable technical documentation, and decide readiness for creator-scale
+  crawling.
 
 blockers:
   - "No current technical blocker in Supabase."
@@ -63,15 +63,16 @@ dependencies:
       with invented content.
 
 important_open_loops:
-  - "Finish review of Creamy Sausage Gnocchi and One-Pot Pasta Primavera."
+  - "Finish review of One-Pot Pasta Primavera, the final candidate in the current six-source batch."
   - "Evaluate batch-level failure modes and decide readiness for creator/channel-scale crawling."
   - >
       Decide whether a normalized Creator entity is warranted after repeated
       channel processing; shared-video provenance already works through the
       common source relation.
   - >
-      Codify protein vs main_ingredient semantics and the Mleté mäso concept rule
-      in technical/agent documentation when the current batch gate closes.
+      Codify protein vs main_ingredient semantics, Mleté mäso usage, and specific
+      ingredient concepts such as Italian Sausage in technical/agent documentation
+      when the current batch gate closes.
   - >
       Treat prep_time, cook_time, servings and similar fields as optional
       enrichment populated only when reliably supported by evidence.
@@ -87,8 +88,9 @@ portfolio:
   signal: >
     The project now demonstrates not only happy-path ingestion but real batch
     behavior: duplicate enrichment, meaningful variant preservation, non-recipe
-    rejection, external-reference fallback with provenance separation, and
-    practical taxonomy evolution without forcing bad values into the model.
+    rejection, external-reference fallback with provenance separation, practical
+    taxonomy evolution, and ingredient-level retrieval through the knowledge graph
+    without polluting coarse recipe taxonomies.
 
 stale_or_unknown:
   - >
@@ -101,11 +103,10 @@ stale_or_unknown:
 verification:
   last_verified: "2026-09-10"
   sources:
-    - "Live Supabase verification: 33 public tables, 245 recipes, 140 sources, 191 inbox items, 14 candidates, 17 evidence rows, 51 culinary concepts."
-    - "Live Supabase Security Advisor: 0 lints."
-    - "Current six-source Hárok3 batch: 4 sources dispositioned, 2 recipe candidates still in explicit review."
-    - "Creamy Spinach and Mushroom Gnocchi promoted as unique; Restované retained; no freezer tag."
-    - "Tasty YouTube fallback verified with external_reference evidence role while source resolution remains partial."
+    - "Live Supabase verification: 246 recipes, 141 sources, 14 candidates, 17 evidence rows, 52 culinary concepts."
+    - "Creamy Sausage Gnocchi promoted as unique with Italian Sausage ingredient concept; source and inbox completed."
+    - "Current six-source Hárok3 batch: 5 sources dispositioned, 1 staged recipe candidate remains in explicit review."
+    - "Tasty YouTube fallback remains partial with external_reference evidence role."
 
 sync:
   status: "synced"
