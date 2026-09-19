@@ -200,3 +200,10 @@ The batch validated multiple failure modes and outcomes:
 - Tasty "One-Pot Vegetarian Meals": source remained partial; one `One-Pot Pasta Primavera` candidate was recovered via `external_reference`, then safely merged into existing `Pasta primavera` without inventing unsupported times, servings, or ingredients.
 
 This closes the isolated/batch-ingestion validation gate. The next technical proof point is a bounded creator/channel-scale pilot with explicit review and no bulk auto-promotion.
+
+
+## Agent execution contract
+
+The ingestion contract defines the data-quality and provenance guarantees. The role boundaries, write permissions, escalation rules, model-strength policy, retry behavior, and Aaron & Claire creator-pilot protocol are defined separately in [Agent Contract v1](agent-contract-v1.md).
+
+Agent Contract v1 is currently a design specification to be validated through the creator-scale pilot; it does not imply that autonomous ingestion workers are already implemented.
