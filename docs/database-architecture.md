@@ -97,11 +97,26 @@ See [ingestion contract v1](ingestion-contract-v1.md) for state semantics and re
 
 `protein` represents the dominant meat/fish/tofu/cheese-style protein category. When the species/type is known, keep the concrete category such as `Bravčové mäso` rather than replacing it with a preparation form such as ground meat. The field may legitimately be `NULL` when no meaningful protein category applies.
 
-### `main_ingredient`
+### Key ingredients and the legacy `main_ingredient` field
 
-`main_ingredient` represents a dominant **defining non-protein ingredient** when one is genuinely useful for recipe identity or pantry-driven retrieval. Examples include zucchini in a zucchini-heavy dish, mushrooms in a mushroom-led dish, tofu in a tofu-led dish, or potatoes when potatoes themselves are the subject of the dish.
+The preferred model for ingredient-driven retrieval is now **one-to-many key ingredient concepts**, not a single mandatory `main_ingredient` value.
 
-Do not use `main_ingredient` as a default place for the starch/base merely because a recipe contains rice, noodles, pasta, or potatoes. In a rice bowl, fried-rice-style dish, ramen, or noodle dish, the starch may be a structural base rather than the defining ingredient. `main_ingredient` may therefore legitimately be `NULL`.
+A recipe may have roughly 1–3 key ingredient concepts when evidence supports them. Examples:
+
+- a zucchini-led dish -> `Cuketa`;
+- kimchi fried rice -> `Kimchi`;
+- gochujang fried rice -> `Gochujang`;
+- spinach and mushroom gnocchi -> `Špenát` + `Huby`.
+
+Key ingredients are represented through `recipe_concepts` with `importance = 'primary'` and an ingredient-like concept type such as `ingredient`, `stock`, `sauce`, `component`, `seasoning`, `condiment`, or `dough_batter`. Technique/preparation/category concepts are not treated as key ingredients merely because they are important.
+
+The existing `recipes.main_ingredient_id` field remains for backward compatibility and historical data, but new ingestion should **not** force a value into it. It is no longer the preferred source of truth for "what ingredient defines this recipe". Existing values may be migrated or retained case-by-case after audit rather than blanket-rewritten.
+
+This avoids artificial single-choice decisions for recipes that are naturally defined by multiple ingredients.
+
+### Base component vs side dish
+
+Do not use `main_ingredient` as a default place for a starch/base merely because a recipe contains rice, noodles, pasta, or potatoes.
 
 `side_dish` remains an actual accompaniment served with the recipe. It must not be repurposed to represent an integrated rice/noodle base.
 
@@ -109,7 +124,7 @@ The Aaron & Claire creator pilot exposed a missing modeling distinction for inte
 
 ### Specific ingredients and forms
 
-Concrete or reusable ingredient concepts such as `Mleté mäso`, `Italian Sausage`, or future `Guanciale` belong in `culinary_concepts` / `recipe_concepts` when they are useful for ingredient-driven retrieval. Recipe tags remain properties of the dish, not an ingredient catalogue.
+Concrete or reusable concepts such as `Mleté mäso`, `Gochujang`, `Italian Sausage`, or future `Guanciale` belong in `culinary_concepts` / `recipe_concepts` when useful for retrieval. Recipe tags remain properties of the dish, not an ingredient catalogue.
 
 ## Provenance model
 

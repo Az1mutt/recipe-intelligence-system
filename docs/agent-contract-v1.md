@@ -160,7 +160,9 @@ Responsibilities:
 Current semantic rules:
 
 - `protein` represents the known protein species/category, not its physical form;
-- `main_ingredient` is a dominant defining non-protein ingredient when one is genuinely meaningful; it must not default to rice/noodles/pasta merely because they form the dish's starch base;
+- ingredient identity is concept-first: when evidence supports it, Classification should normally propose roughly 1–3 primary key ingredient concepts rather than forcing one `main_ingredient`;
+- key ingredients are represented in the candidate `concepts` list and, after approval, in `recipe_concepts` with `importance = primary`; ingredient-like concept types may include ingredient, stock, sauce, component, seasoning, condiment, and dough/batter;
+- the legacy `main_ingredient` field may remain populated for historical/compatibility reasons, but new ingestion should not force it and should not treat it as the canonical key-ingredient model;
 - `side_dish` is reserved for an actual accompaniment, not an integrated starch/noodle base;
 - while the creator pilot is evaluating the missing base dimension, candidate JSON may use provisional `base_component` values such as `Ryža` or `Rezance`; agents must not assume this is already a stable schema field;
 - forms such as `Mleté mäso` and specific reusable ingredients/condiments such as `Gochujang`, `Italian Sausage`, or `Guanciale` belong in culinary concepts when useful;
@@ -260,7 +262,7 @@ Controlled dimensions include, at minimum:
 
 - cuisine,
 - protein,
-- main ingredient,
+- legacy main ingredient lookup,
 - preparation type,
 - meal usage,
 - dish type,
@@ -314,7 +316,7 @@ Suitable for:
 Required for:
 
 - candidate extraction from messy multi-recipe content;
-- cuisine/protein/main-ingredient interpretation;
+- cuisine/protein/key-ingredient interpretation;
 - duplicate vs variant reasoning;
 - source-provenance QA;
 - preference adaptation;
