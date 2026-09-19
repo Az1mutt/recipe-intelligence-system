@@ -110,6 +110,8 @@ A recipe may have roughly 1–3 key ingredient concepts when evidence supports t
 
 Key ingredients are represented through `recipe_concepts` with `importance = 'primary'` and an ingredient-like concept type such as `ingredient`, `stock`, `sauce`, `component`, `seasoning`, `condiment`, or `dough_batter`. Technique/preparation/category concepts are not treated as key ingredients merely because they are important.
 
+The protein axis and key-ingredient concepts are **not mutually exclusive semantic universes**. The same food can play different roles in different recipes. For example, `Vajcia` may be `protein = Vajcia` in an omelette or tamagoyaki, while in Oyakodon the recipe keeps `protein = Kuracie mäso` and links `Vajcia` as a primary key ingredient concept. This is intentional rather than duplicate modeling: `protein` answers the coarse protein-category question, while key concepts answer what materially defines this specific recipe.
+
 The existing `recipes.main_ingredient_id` field remains for backward compatibility and historical data, but new ingestion should **not** force a value into it. It is no longer the preferred source of truth for "what ingredient defines this recipe". Existing values may be migrated or retained case-by-case after audit rather than blanket-rewritten.
 
 This avoids artificial single-choice decisions for recipes that are naturally defined by multiple ingredients.

@@ -161,6 +161,7 @@ Current semantic rules:
 
 - `protein` represents the known protein species/category, not its physical form;
 - ingredient identity is concept-first: when evidence supports it, Classification should normally propose roughly 1–3 primary key ingredient concepts rather than forcing one `main_ingredient`;
+- protein and key-ingredient concepts may overlap by ingredient family when their roles differ: e.g. eggs can be `protein = Vajcia` in an egg-led dish, but a primary `Vajcia` concept while `protein = Kuracie mäso` in Oyakodon; decide from recipe role rather than enforcing global exclusivity;
 - key ingredients are represented in the candidate `concepts` list and, after approval, in `recipe_concepts` with `importance = primary`; ingredient-like concept types may include ingredient, stock, sauce, component, seasoning, condiment, and dough/batter;
 - the legacy `main_ingredient` field may remain populated for historical/compatibility reasons, but new ingestion should not force it and should not treat it as the canonical key-ingredient model;
 - `side_dish` is reserved for an actual accompaniment, not an integrated starch/noodle base;
