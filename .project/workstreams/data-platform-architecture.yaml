@@ -26,9 +26,12 @@ current_state: >
   candidates. Human review has begun: Ground Beef Bulgogi and Spicy Ground Pork
   Bulgogi were promoted as separate recipes, and Chinese Mapo Tofu was approved
   as an exact duplicate/enrichment of existing Mapo Tofu. The pilot also exposed
-  and corrected a taxonomy error: main_ingredient now means a dominant defining
-  non-protein ingredient, not a default starch/base bucket. Unpromoted pilot
-  candidates that used Ryža or Rezance as main_ingredient were corrected to a
+  and corrected a taxonomy error. Ingredient identity is now concept-first:
+  new ingestion should usually identify 1-3 primary key ingredient concepts via
+  culinary_concepts/recipe_concepts rather than forcing a single main_ingredient.
+  recipes.main_ingredient_id remains a legacy/backward-compatibility field and is
+  no longer the preferred source of truth for defining ingredients. Unpromoted
+  pilot candidates that used Ryža or Rezance as main_ingredient were corrected to
   provisional candidate_data.base_component instead. side_dish remains an actual
   accompaniment. Gochujang is modeled as a culinary condiment concept. Live counts
   are now 248 recipes, 147 sources, 200 inbox items, 39 candidates, 40 evidence
@@ -74,6 +77,10 @@ important_open_loops:
   - >
       Post-pilot, decide whether provisional base_component should become a
       first-class lookup/column or be represented through culinary concepts.
+  - >
+      Audit historical main_ingredient values under the new concept-first model
+      and migrate selectively into primary recipe_concepts where useful; do not
+      bulk-clear or rewrite the legacy field without recipe-level review.
   - >
       Audit historical main_ingredient assignments that currently use Ryža (18),
       Rezance (19), or Zemiaky (8). Do not blanket-migrate them: some potato-led
@@ -134,7 +141,8 @@ verification:
     - "Cohort item 3 approved as exact duplicate: existing Mapo Tofu enriched with Aaron & Claire YouTube + creator page, Rýchle tag, and Mleté mäso concept."
     - "QA classification correction: Gochujang is attached as a culinary condiment concept to all five pilot candidates where it is central."
     - "Taxonomy correction: unpromoted pilot candidates no longer use Ryža/Rezance as main_ingredient; they carry provisional base_component instead. Gamja Jorim keeps Zemiaky because potatoes define the dish."
-    - "Repository semantics updated and merged via PR #9, squash commit 5f853a3f15a9497ae2acfb06d14eddc2382bf4c0."
+    - "Repository base/main-ingredient semantics updated and merged via PR #9, squash commit 5f853a3f15a9497ae2acfb06d14eddc2382bf4c0."
+    - "Concept-first key ingredient model approved and merged via PR #10, squash commit 6af5201cb65bff36fc3f6685db71f97339fa51f5; new ingestion should prefer 1-3 primary key ingredient concepts and treat main_ingredient as legacy compatibility."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
