@@ -173,8 +173,9 @@ Use `hold` for intentionally parked items.
 
 - `protein` keeps a known meat/protein species/category, e.g. `Bravčové mäso`.
 - Ground form does not replace a known species; `Mleté mäso` can be a culinary concept.
-- `main_ingredient` is the practical pantry/menu-planning dimension.
-- Specific reusable ingredients such as `Italian Sausage` or future `Guanciale` belong in culinary concepts when useful for retrieval.
+- `main_ingredient` is a dominant defining non-protein ingredient when one is genuinely meaningful; it must not default to the recipe's starch/base.
+- Integrated rice/noodle/starch bases are distinct from `side_dish`. During the Aaron & Claire pilot they may be carried provisionally in candidate JSON as `base_component` until the post-pilot data-model decision.
+- Specific reusable ingredients such as `Gochujang`, `Italian Sausage`, or future `Guanciale` belong in culinary concepts when useful for retrieval.
 - Tags describe properties of the dish, not source provenance or an unrestricted ingredient vocabulary.
 - Prep time, cook time, servings, and similar fields are optional enrichment and are populated only when evidence supports them.
 
