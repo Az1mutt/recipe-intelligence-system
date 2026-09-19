@@ -11,49 +11,48 @@ status: "active"
 phase: "creator-scale-ingestion-pilot"
 
 current_gate: >
-  Prove that ingestion contract v1 remains reliable when applied across a
-  bounded creator/channel cohort rather than isolated URLs. The heterogeneous
-  six-source Hárok3 batch gate is closed successfully: direct pages, duplicate
-  enrichment, meaningful variants, non-recipe content, partial-source fallback,
-  and merge semantics all behaved as intended.
+  Validate Agent Contract v1 against a bounded Aaron & Claire creator/channel
+  cohort. The ingestion contract itself has already passed isolated-source and
+  heterogeneous six-source batch validation; the remaining proof point is whether
+  the role boundaries, escalation rules, idempotency expectations, and deterministic
+  promotion model remain reliable at creator scale.
 
 current_state: >
-  The live Supabase/PostgreSQL architecture has 33 public tables and currently
-  contains 246 recipes, 142 sources, 191 recipe_inbox items, 14 recipe_candidates,
-  17 recipe_inbox_evidence rows, and 52 culinary concepts. Ingestion contract v1
-  is implemented and has now passed both single-source acceptance tests and a
-  heterogeneous six-source batch. The completed batch produced: one exact
-  duplicate enrichment (Perfect Pot Roast -> Pot Roast), one non-recipe article
-  with zero recipe candidates (cheesecake water-bath technique), three unique
-  recipe promotions (Japanese-Style Mapo Tofu, Creamy Spinach and Mushroom
-  Gnocchi, Creamy Sausage Gnocchi), and one merge candidate where partial Tasty
-  YouTube evidence safely enriched existing Pasta primavera without inventing
-  unsupported details. The Tasty source remains truthfully partial and its
-  third-party fallback remains external_reference evidence only. Ingredient-level
-  retrieval semantics were refined during review: protein keeps the known meat
-  species, main_ingredient remains a practical pantry/meal-planning dimension,
-  and specific ingredients or forms such as Mleté mäso, Italian Sausage, or
-  future Guanciale belong in culinary concepts rather than recipe tags. All 33
-  public tables have RLS enabled, recipe_public_view remains the secure read
-  surface, and the latest Supabase Security Advisor check reports zero lints.
-  Stable repository documentation for the ingestion contract and live database
-  state was refreshed and merged to main in PR #7 on 2026-09-10.
+  Ingestion contract v1 is implemented and previously verified against both
+  single-source acceptance cases and a heterogeneous six-source batch. Agent
+  Contract v1 is now documented in docs/agent-contract-v1.md and defines five
+  explicit roles: Discovery, Resolver, Classification, QA/Review, and Promotion
+  Executor. The contract establishes minimum write scopes, escalation conditions,
+  model-strength tiers, retry/resume behavior, creator-pilot stop conditions, and
+  a 10-15 video Aaron & Claire pilot specification. Autonomous agent workers are
+  not implemented yet; during the pilot this specialist chat may simulate the
+  orchestrator/senior-reviewer role while each stage follows the future agent
+  boundaries. The most recent verified live database snapshot remains 2026-09-10
+  at 33 public tables, 246 recipes, 142 sources, 191 inbox items, 14 candidates,
+  17 evidence rows, and 52 culinary concepts. A fresh 2026-09-19 count refresh
+  was attempted but the Supabase connection timed out, so those counts must not
+  be treated as freshly re-verified today.
 
 exact_next_action: >
-  Run a bounded creator/channel-scale pilot using Aaron & Claire as the first
-  creator cohort. First enumerate and stage a manageable set of channel videos
-  with creator identity and source grouping preserved, then resolve candidates
-  through the same evidence -> validation -> dedupe -> preference -> explicit-
-  review pipeline. Do not bulk auto-promote the channel; use the pilot to validate
-  repeated-source handling, creator grouping, batch review quality, and whether
-  a normalized Creator entity or stronger agent orchestration is actually needed.
+  Enumerate a bounded cohort of 10-15 Aaron & Claire videos for the first
+  creator-scale pilot. Preserve creator/channel grouping, include a heterogeneous
+  mix of single-recipe and multi-recipe sources, reuse the previously validated
+  Ssamjang video as a control case if useful, stage new discoveries with
+  explicit_review, and execute the cohort through the Agent Contract v1 pipeline:
+  Discovery -> Resolver -> Classification -> QA -> explicit review -> deterministic
+  Promotion. Stop after the cohort for an agent-readiness audit before any broader
+  channel crawl.
 
 blockers:
-  - "No current technical blocker in Supabase."
+  - "No known architecture blocker for starting the Aaron & Claire pilot."
   - >
-      Direct YouTube fetch remains inconsistent, but this is now a proven
-      resolver constraint rather than a blocker because partial resolution and
-      external_reference fallback semantics survived batch validation.
+      Direct YouTube fetch remains inconsistent, but partial-resolution and
+      external_reference fallback semantics are already part of the validated
+      ingestion contract.
+  - >
+      Fresh live Supabase counts could not be refreshed on 2026-09-19 because
+      the connector timed out; this does not block the pilot but makes current
+      row counts stale until the next successful verification.
 
 dependencies:
   - project: "External source ecosystem"
@@ -63,27 +62,29 @@ dependencies:
       creator-written references, or trustworthy external references. Failed or
       partial acquisition must remain explicit and must never be replaced with
       invented source content.
+  - project: "Project OS / Agent Architecture"
+    workstream: "Cross-project agent platform"
+    dependency: >
+      Recipe Intelligence owns the domain-specific Agent Contract. Project OS/Core
+      may later decide how these roles are hosted, scheduled, observed, and reused
+      across projects, but that platform decision is not required to run the
+      supervised pilot.
 
 important_open_loops:
-  - "Run the first bounded Aaron & Claire creator/channel-scale ingestion pilot."
+  - "Enumerate and stage the first 10-15 video Aaron & Claire pilot cohort."
   - >
-      Use the pilot to define an Agent Contract v1: which steps can be delegated
-      to discovery/resolver/classification/QA/promotion agents, what each agent
-      may write, and which ambiguous decisions must escalate to this specialist
-      chat or the user.
+      Measure which Agent Contract roles are genuinely mechanical vs which require
+      strong reasoning or human review.
   - >
-      Decide whether a normalized Creator entity is warranted after the pilot;
-      for now creator identity remains on sources.author and source grouping is
-      sufficient for provenance.
+      Decide whether a normalized Creator entity is warranted after repeated
+      creator processing; current source/content-collection provenance remains
+      sufficient until evidence says otherwise.
   - >
-      Reuse the existing Aaron & Claire channel-review content collection for
-      creator-scale review; do not use recipe tags for provenance.
+      Decide whether specific culinary-concept creation can later be delegated
+      safely or should remain explicit-review during early agent operation.
   - >
       Continue using culinary concepts for specific ingredient retrieval while
       keeping protein and main_ingredient coarse and purposeful.
-  - >
-      Treat prep_time, cook_time, servings and similar fields as optional
-      enrichment populated only when reliably supported by evidence.
   - "Review remaining social inbox items later."
   - "Recover unresolved Facebook saves where possible."
   - "Import and deduplicate Hárok5 later."
@@ -93,41 +94,34 @@ important_open_loops:
 portfolio:
   milestone: true
   signal: >
-    The project has crossed from schema and single-case validation into a proven
-    heterogeneous ingestion pipeline. It now demonstrates auditable provenance,
-    partial-source truthfulness, non-recipe rejection, duplicate enrichment,
-    meaningful variant preservation, safe merge behavior, personal preference
-    handling, and ingredient-level knowledge modeling under RLS. The next
-    portfolio-relevant proof point is creator/channel-scale operation and a
-    repeatable agent contract for delegated ingestion.
+    Recipe Intelligence now has both a validated ingestion data contract and a
+    concrete agent-execution contract. The next proof point is no longer whether
+    isolated ingestion works, but whether a bounded creator cohort can be processed
+    repeatably with narrow agent permissions, auditable evidence, strong-reasoning
+    QA only where needed, deterministic promotion, and explicit escalation instead
+    of guessing.
 
 stale_or_unknown:
   - >
-      Root project rollup is owned by Project OS and is not written by this
-      specialist workstream; it may lag until the rollup owner reconciles this
-      phase change.
+      Live database counts are last verified 2026-09-10 because the attempted
+      2026-09-19 refresh timed out.
   - >
       Creator-layer normalization remains intentionally undecided pending the
       first real creator/channel pilot.
   - >
-      Repository-level AGENTS.md still contains the older conservative no-auto-
-      merge workflow until the Project OS/Core rules are rewritten across repos.
-      User explicitly approved automatic merge for verified stable changes in
-      this workstream on 2026-09-10.
+      The concrete runtime/orchestration technology for autonomous agents is not
+      selected or implemented; Agent Contract v1 is the domain behavior contract,
+      not the deployment architecture.
 
 verification:
-  last_verified: "2026-09-10"
+  last_verified: "2026-09-19"
   sources:
-    - "Live Supabase verification: 33 public tables, 246 recipes, 142 sources, 191 inbox items, 14 candidates, 17 evidence rows, 52 culinary concepts."
-    - "All six Hárok3 validation sources are completed."
-    - "Perfect Pot Roast: duplicate/exact_duplicate and existing Pot Roast enriched."
-    - "Cheesecake water-bath article: resolved non-recipe, zero candidates."
-    - "Japanese-Style Mapo Tofu, Creamy Spinach and Mushroom Gnocchi, and Creamy Sausage Gnocchi: promoted unique recipes."
-    - "One-Pot Pasta Primavera: duplicate/merge_candidate; Tasty source linked to existing Pasta primavera; source remains partial and external_reference provenance preserved."
-    - "Live Supabase Security Advisor: 0 lints."
-    - "Documentation refresh merged to main via PR #7, merge commit 5cf56e182e6e70ac3c0e7c9dfc2e824ef0153042."
-    - "User selected Aaron & Claire as the first creator-scale pilot and approved automatic merge of verified stable changes."
+    - "docs/ingestion-contract-v1.md on repository main, previously validated against live ingestion cases."
+    - "docs/agent-contract-v1.md created for the Aaron & Claire creator-scale pilot."
+    - "Repository AGENTS.md uses risk-based Git workflow and permits automatic merge after approved scope and checks."
+    - "Attempted live Supabase count refresh on 2026-09-19 failed due to connection timeout; prior 2026-09-10 counts retained as stale snapshot."
 
 sync:
-  status: "synced"
+  status: "pending_review"
   storage: ".project/workstreams/data-platform-architecture.yaml"
+  branch: "docs/agent-contract-v1-2026-09-19"
