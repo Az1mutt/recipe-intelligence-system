@@ -99,7 +99,13 @@ See [ingestion contract v1](ingestion-contract-v1.md) for state semantics and re
 
 ### `main_ingredient`
 
-`main_ingredient` is the practical pantry/menu-planning dimension: it should help answer questions such as "I have chickpeas/gnocchi/mushrooms; what can I cook?" It is not required to duplicate the protein field.
+`main_ingredient` represents a dominant **defining non-protein ingredient** when one is genuinely useful for recipe identity or pantry-driven retrieval. Examples include zucchini in a zucchini-heavy dish, mushrooms in a mushroom-led dish, tofu in a tofu-led dish, or potatoes when potatoes themselves are the subject of the dish.
+
+Do not use `main_ingredient` as a default place for the starch/base merely because a recipe contains rice, noodles, pasta, or potatoes. In a rice bowl, fried-rice-style dish, ramen, or noodle dish, the starch may be a structural base rather than the defining ingredient. `main_ingredient` may therefore legitimately be `NULL`.
+
+`side_dish` remains an actual accompaniment served with the recipe. It must not be repurposed to represent an integrated rice/noodle base.
+
+The Aaron & Claire creator pilot exposed a missing modeling distinction for integrated starch/noodle bases. During the pilot, unresolved candidates may carry a provisional `base_component` field inside `candidate_data` (for example `Ryža` or `Rezance`). This is **not yet a first-class database column or lookup**. The post-pilot audit will decide whether base/component semantics belong in a dedicated lookup or in the culinary-concept layer.
 
 ### Specific ingredients and forms
 
