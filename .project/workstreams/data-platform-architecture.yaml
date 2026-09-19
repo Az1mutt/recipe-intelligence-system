@@ -12,48 +12,43 @@ phase: "creator-scale-ingestion-pilot"
 
 current_gate: >
   Validate Agent Contract v1 against a bounded Aaron & Claire creator/channel
-  cohort. Discovery, Resolver, Classification, and QA/Review have now completed
-  successfully for the first 10-video cohort. The remaining gate is explicit
-  human review followed by deterministic promotion/merge and a post-pilot
-  agent-readiness audit.
+  cohort. Discovery, Resolver, Classification, and QA/Review have completed for
+  the first 10-video cohort. Explicit human review and deterministic promotion
+  are now in progress, after which the pilot must stop for an agent-readiness audit.
 
 current_state: >
-  Supabase is ACTIVE_HEALTHY after restore on 2026-09-19. The Aaron & Claire
-  Agent Contract v1 pilot contains 10 sources: one previously verified Ssamjang
-  control plus nine newly discovered YouTube sources. Resolver produced auditable
-  evidence for all nine new sources: eight are resolved through YouTube source
-  content plus creator-owned recipe references, while one 2024 Gochujang Noodles
-  source remains truthfully partial because its exact creator page could not be
-  independently verified. Classification produced 25 new recipe candidates
-  without writing to recipes. QA/Review then validated the cohort against live
-  recipes and preferences: 24 candidates passed validation, 20 are proposed
-  unique/meaningful variants, 4 are exact duplicates proposed for enrichment/
-  merge, and 1 partial-source Gochujang Noodles candidate remains a possible
-  duplicate requiring review. All nine new inbox sources are ready_for_review.
-  No promotion has occurred. Fresh live counts are 246 recipes, 142 sources,
-  200 inbox items, 39 candidates, 40 evidence rows, and 52 culinary concepts.
-  Agent Contract v1 therefore has now exercised four of its five roles in a real
-  creator cohort: Discovery, Resolver, Classification, and QA/Review. Promotion
-  Executor remains intentionally gated on explicit review.
+  Supabase is ACTIVE_HEALTHY. The Aaron & Claire Agent Contract v1 pilot contains
+  10 sources: one previously verified Ssamjang control plus nine new explicit-review
+  YouTube sources. Resolver evidence is auditable for all nine new sources: eight
+  are resolved through source content plus creator-owned references, while the
+  2024 Gochujang Noodles source remains truthfully partial because its exact
+  creator page was not independently verified. Classification produced 25 new
+  candidates and QA proposed 20 unique/meaningful variants, 4 exact-duplicate
+  enrichments, and 1 possible duplicate/hold. Human review has begun. Cohort item 2
+  was approved and deterministically promoted: Ground Beef Bulgogi and Spicy Ground
+  Pork Bulgogi now exist as separate recipes, each linked to the original YouTube
+  video plus its creator-owned written recipe page. Both retain concrete beef/pork
+  protein categories and use Mleté mäso as a culinary concept. Live counts after
+  this promotion are 248 recipes, 145 sources, 200 inbox items, 39 candidates,
+  40 evidence rows, and 52 culinary concepts.
 
 exact_next_action: >
-  Review the Aaron & Claire QA dispositions with Igor. Approve/reject the 20
-  proposed unique candidates and the 4 exact-duplicate enrichment actions, while
-  keeping the unresolved 2024 Gochujang Noodles candidate on hold unless its
-  identity can be resolved safely. After explicit approval, run the deterministic
-  Promotion Executor only for approved dispositions, verify resulting recipes/
-  sources/bridges/inbox states, then stop and perform the Agent Contract v1
-  pilot audit before any broader channel crawl.
+  Continue explicit review with cohort item 3, Chinese Mapo Tofu. Current QA
+  proposes exact_duplicate against existing Mapo Tofu, so review whether to enrich
+  the existing recipe with the Aaron & Claire source rather than create a new row.
+  Continue video-by-video after that. Keep the 2024 Gochujang Noodles candidate on
+  hold until its identity versus the resolved 2022 Gochujang Stir-Fried Noodles
+  candidate is clarified.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
   - >
       The 2024 Gochujang Noodles source is intentionally partial and may overlap
-      the resolved 2022 Gochujang Noodles / Gochujang Stir-Fried Noodles recipe.
-      It must not be promoted until identity is resolved or explicitly held.
+      the resolved 2022 Gochujang Stir-Fried Noodles recipe. It must not be
+      promoted until identity is resolved or explicitly held.
   - >
-      Promotion is intentionally blocked on explicit review because creator/
-      channel discovery uses review_policy=explicit_review.
+      Remaining creator/channel candidates still require explicit human review
+      before deterministic promotion.
 
 dependencies:
   - project: "External source ecosystem"
@@ -72,8 +67,9 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of 25 new Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 23 Aaron & Claire pilot candidates."
   - "Run deterministic Promotion Executor only for approved dispositions."
+  - "Resolve or hold the 2024 Gochujang Noodles identity safely."
   - "Perform post-pilot Agent Contract v1 audit before expanding the channel crawl."
   - >
       Measure which roles proved mechanical vs which required strong reasoning or
@@ -93,12 +89,12 @@ important_open_loops:
 portfolio:
   milestone: true
   signal: >
-    Recipe Intelligence has now exercised four distinct agent roles against a
-    real creator-scale cohort with durable checkpoints and narrow writes. The
-    system handled 1-to-many video extraction, existing-recipe dedupe, meaningful
-    variants, preference checks, and a partial-source ambiguity without promoting
-    unsupported data. The final proof point for Agent Contract v1 is deterministic
-    execution of explicitly approved dispositions and the resulting audit.
+    Recipe Intelligence has now exercised all five conceptual roles of Agent
+    Contract v1 in a real creator-scale cohort, including the first deterministic
+    Promotion Executor run after explicit human approval. The system preserved
+    evidence provenance, kept one ambiguous source on hold, and promoted two
+    meaningful variants with narrow, auditable writes. The remaining proof point
+    is completion of reviewed dispositions followed by the post-pilot audit.
 
 stale_or_unknown:
   - >
@@ -115,11 +111,11 @@ verification:
   last_verified: "2026-09-19"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts: 246 recipes, 142 sources, 200 inbox items, 39 candidates, 40 evidence rows, 52 culinary concepts."
-    - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new ready_for_review sources."
+    - "Fresh live counts after first pilot promotion: 248 recipes, 145 sources, 200 inbox items, 39 candidates, 40 evidence rows, 52 culinary concepts."
+    - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
-    - "Classification: 25 new extracted candidates; no recipe promotion."
-    - "QA: 24 passed validation, 20 proposed unique, 4 exact duplicates, 1 possible duplicate/needs_review."
+    - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
+    - "Cohort item 2 approved/promoted: Ground Beef Bulgogi and Spicy Ground Pork Bulgogi; both linked to YouTube + creator pages and Mleté mäso concept."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
