@@ -27,7 +27,8 @@ current_state: >
   a 10-15 video Aaron & Claire pilot specification. Autonomous agent workers are
   not implemented yet; during the pilot this specialist chat may simulate the
   orchestrator/senior-reviewer role while each stage follows the future agent
-  boundaries. The most recent verified live database snapshot remains 2026-09-10
+  boundaries. Agent Contract v1 and its supporting documentation were merged to
+  main through PR #8 on 2026-09-19. The most recent verified live database snapshot remains 2026-09-10
   at 33 public tables, 246 recipes, 142 sources, 191 inbox items, 14 candidates,
   17 evidence rows, and 52 culinary concepts. A fresh 2026-09-19 count refresh
   was attempted but the Supabase connection timed out, so those counts must not
@@ -120,8 +121,8 @@ verification:
     - "docs/agent-contract-v1.md created for the Aaron & Claire creator-scale pilot."
     - "Repository AGENTS.md uses risk-based Git workflow and permits automatic merge after approved scope and checks."
     - "Attempted live Supabase count refresh on 2026-09-19 failed due to connection timeout; prior 2026-09-10 counts retained as stale snapshot."
+    - "Agent Contract v1 merged to main via PR #8, squash commit f5632cf0311528b2bfbec1538d25b640fc3fb39c."
 
 sync:
-  status: "pending_review"
+  status: "synced"
   storage: ".project/workstreams/data-platform-architecture.yaml"
-  branch: "docs/agent-contract-v1-2026-09-19"
