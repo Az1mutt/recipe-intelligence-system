@@ -21,30 +21,30 @@ current_state: >
   10 sources: one previously verified Ssamjang control plus nine new explicit-review
   YouTube sources. Resolver evidence is auditable for all nine new sources: eight
   are resolved through source content plus creator-owned references, while the
-  2024 Gochujang Noodles source remains truthfully partial because its exact
-  creator page was not independently verified. Classification produced 25 new
-  candidates. Human review has begun: Ground Beef Bulgogi and Spicy Ground Pork
-  Bulgogi were promoted as separate recipes, and Chinese Mapo Tofu was approved
-  as an exact duplicate/enrichment of existing Mapo Tofu. The pilot also exposed
-  and corrected a taxonomy error. Ingredient identity is now concept-first:
-  new ingestion should usually identify 1-3 primary key ingredient concepts via
-  culinary_concepts/recipe_concepts rather than forcing a single main_ingredient.
-  recipes.main_ingredient_id remains a legacy/backward-compatibility field and is
-  no longer the preferred source of truth for defining ingredients. Unpromoted
-  pilot candidates that used Ryža or Rezance as main_ingredient were corrected to
-  provisional candidate_data.base_component instead. side_dish remains an actual
-  accompaniment. Gochujang is modeled as a culinary condiment concept. Live counts
-  are now 248 recipes, 147 sources, 200 inbox items, 39 candidates, 40 evidence
-  rows, and 52 culinary concepts; pilot candidate statuses are 2 promoted,
-  1 duplicate, and 22 needs_review.
+  2024 Gochujang Noodles source remains truthfully partial. Classification produced
+  25 new candidates and human review is progressing video by video. Cohort item 2
+  promoted Ground Beef Bulgogi and Spicy Ground Pork Bulgogi. Cohort item 3
+  enriched existing Mapo Tofu as an exact duplicate. In cohort item 4, Miso Ramen
+  was deliberately placed on hold for a dedicated ramen-domain review, while
+  Teriyaki Chicken, Oyakodon, and Chicken Katsudon enriched existing recipes and
+  Yaki Udon plus Chicken Katsu were promoted as new recipes. Oyakodon and Katsudon
+  had legacy main_ingredient=Ryža cleared because rice is an integrated base, not
+  a defining ingredient. New culinary concepts Vajcia and Panko were created.
+  Ingredient identity is concept-first: new ingestion should normally identify
+  1-3 primary key ingredient concepts, while recipes.main_ingredient_id remains
+  legacy compatibility. Protein and key concepts may overlap by recipe role; e.g.
+  Oyakodon keeps protein=Kuracie mäso and uses Vajcia as a primary concept, while
+  egg-led dishes may use protein=Vajcia. Live counts are 250 recipes, 153 sources,
+  200 inbox items, 39 candidates, 40 evidence rows, and 54 culinary concepts.
+  Pilot candidate statuses are 4 promoted, 4 duplicate, and 17 needs_review.
 
 exact_next_action: >
-  Continue explicit review with cohort item 4, the six-recipe Japanese Dinners
-  video. Review Miso Ramen, Teriyaki Chicken, Yaki Udon, Oyakodon, Chicken Katsu,
-  and Chicken Katsudon against their current QA dispositions before deterministic
-  promotion/enrichment. Keep the 2024 Gochujang Noodles candidate on hold until
-  its identity versus the resolved 2022 Gochujang Stir-Fried Noodles candidate
-  is clarified.
+  Continue explicit review with cohort item 5, the three-recipe Kimchi Fried Rice
+  video: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried
+  Noodles. Re-evaluate them under the concept-first ingredient model, especially
+  Kimchi as a likely primary key ingredient and Ryža/Rezance as provisional base
+  components, then promote only after explicit approval. Keep Miso Ramen and the
+  partial 2024 Gochujang Noodles candidate on hold.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -73,7 +73,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 22 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 17 Aaron & Claire pilot candidates."
   - >
       Post-pilot, decide whether provisional base_component should become a
       first-class lookup/column or be represented through culinary concepts.
@@ -133,7 +133,7 @@ verification:
   last_verified: "2026-09-19"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after Bulgogi promotion and Mapo enrichment: 248 recipes, 147 sources, 200 inbox items, 39 candidates, 40 evidence rows, 52 culinary concepts."
+    - "Fresh live counts after Japanese Dinners review: 250 recipes, 153 sources, 200 inbox items, 39 candidates, 40 evidence rows, 54 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
@@ -143,6 +143,8 @@ verification:
     - "Taxonomy correction: unpromoted pilot candidates no longer use Ryža/Rezance as main_ingredient; they carry provisional base_component instead. Gamja Jorim keeps Zemiaky because potatoes define the dish."
     - "Repository base/main-ingredient semantics updated and merged via PR #9, squash commit 5f853a3f15a9497ae2acfb06d14eddc2382bf4c0."
     - "Concept-first key ingredient model approved and merged via PR #10, squash commit 6af5201cb65bff36fc3f6685db71f97339fa51f5; new ingestion should prefer 1-3 primary key ingredient concepts and treat main_ingredient as legacy compatibility."
+    - "Japanese Dinners cohort item: Teriyaki Chicken/Oyakodon/Chicken Katsudon enriched; Yaki Udon and Chicken Katsu promoted; Miso Ramen held for dedicated ramen review; Vajcia and Panko concepts created."
+    - "Protein/key-concept overlap rule documented and merged via PR #11, squash commit 473fa60b4243061e555f0d158739eb2f92b0099b."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
