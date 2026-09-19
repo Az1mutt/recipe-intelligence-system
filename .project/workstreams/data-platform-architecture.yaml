@@ -33,12 +33,12 @@ current_state: >
   40 evidence rows, and 52 culinary concepts.
 
 exact_next_action: >
-  Continue explicit review with cohort item 3, Chinese Mapo Tofu. Current QA
-  proposes exact_duplicate against existing Mapo Tofu, so review whether to enrich
-  the existing recipe with the Aaron & Claire source rather than create a new row.
-  Continue video-by-video after that. Keep the 2024 Gochujang Noodles candidate on
-  hold until its identity versus the resolved 2022 Gochujang Stir-Fried Noodles
-  candidate is clarified.
+  Continue explicit review with cohort item 4, the six-recipe Japanese Dinners
+  video. Review Miso Ramen, Teriyaki Chicken, Yaki Udon, Oyakodon, Chicken Katsu,
+  and Chicken Katsudon against their current QA dispositions before deterministic
+  promotion/enrichment. Keep the 2024 Gochujang Noodles candidate on hold until
+  its identity versus the resolved 2022 Gochujang Stir-Fried Noodles candidate
+  is clarified.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -67,7 +67,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 23 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 22 Aaron & Claire pilot candidates."
   - "Run deterministic Promotion Executor only for approved dispositions."
   - "Resolve or hold the 2024 Gochujang Noodles identity safely."
   - "Perform post-pilot Agent Contract v1 audit before expanding the channel crawl."
@@ -116,6 +116,8 @@ verification:
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
     - "Cohort item 2 approved/promoted: Ground Beef Bulgogi and Spicy Ground Pork Bulgogi; both linked to YouTube + creator pages and Mleté mäso concept."
+    - "Cohort item 3 approved as exact duplicate: existing Mapo Tofu enriched with Aaron & Claire YouTube + creator page, Rýchle tag, and Mleté mäso concept."
+    - "QA classification correction: Gochujang is now attached as a culinary condiment concept to all five pilot candidates where it is central; noodle/rice/potato main ingredients remain intact."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
