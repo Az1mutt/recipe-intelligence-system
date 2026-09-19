@@ -23,14 +23,17 @@ current_state: >
   are resolved through source content plus creator-owned references, while the
   2024 Gochujang Noodles source remains truthfully partial because its exact
   creator page was not independently verified. Classification produced 25 new
-  candidates and QA proposed 20 unique/meaningful variants, 4 exact-duplicate
-  enrichments, and 1 possible duplicate/hold. Human review has begun. Cohort item 2
-  was approved and deterministically promoted: Ground Beef Bulgogi and Spicy Ground
-  Pork Bulgogi now exist as separate recipes, each linked to the original YouTube
-  video plus its creator-owned written recipe page. Both retain concrete beef/pork
-  protein categories and use Mleté mäso as a culinary concept. Live counts after
-  this promotion are 248 recipes, 145 sources, 200 inbox items, 39 candidates,
-  40 evidence rows, and 52 culinary concepts.
+  candidates. Human review has begun: Ground Beef Bulgogi and Spicy Ground Pork
+  Bulgogi were promoted as separate recipes, and Chinese Mapo Tofu was approved
+  as an exact duplicate/enrichment of existing Mapo Tofu. The pilot also exposed
+  and corrected a taxonomy error: main_ingredient now means a dominant defining
+  non-protein ingredient, not a default starch/base bucket. Unpromoted pilot
+  candidates that used Ryža or Rezance as main_ingredient were corrected to a
+  provisional candidate_data.base_component instead. side_dish remains an actual
+  accompaniment. Gochujang is modeled as a culinary condiment concept. Live counts
+  are now 248 recipes, 147 sources, 200 inbox items, 39 candidates, 40 evidence
+  rows, and 52 culinary concepts; pilot candidate statuses are 2 promoted,
+  1 duplicate, and 22 needs_review.
 
 exact_next_action: >
   Continue explicit review with cohort item 4, the six-recipe Japanese Dinners
@@ -68,6 +71,18 @@ dependencies:
 
 important_open_loops:
   - "Complete explicit review of the remaining 22 Aaron & Claire pilot candidates."
+  - >
+      Post-pilot, decide whether provisional base_component should become a
+      first-class lookup/column or be represented through culinary concepts.
+  - >
+      Audit historical main_ingredient assignments that currently use Ryža (18),
+      Rezance (19), or Zemiaky (8). Do not blanket-migrate them: some potato-led
+      dishes may legitimately keep Zemiaky as main_ingredient, while integrated
+      rice/noodle bases should be reclassified.
+  - >
+      Treat ramen as a dedicated future domain review. Use the user-designated
+      Lord Ramen book as the planned primary reference and supplement it with
+      additional authentic sources before locking ramen-specific taxonomy.
   - "Run deterministic Promotion Executor only for approved dispositions."
   - "Resolve or hold the 2024 Gochujang Noodles identity safely."
   - "Perform post-pilot Agent Contract v1 audit before expanding the channel crawl."
@@ -111,13 +126,15 @@ verification:
   last_verified: "2026-09-19"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after first pilot promotion: 248 recipes, 145 sources, 200 inbox items, 39 candidates, 40 evidence rows, 52 culinary concepts."
+    - "Fresh live counts after Bulgogi promotion and Mapo enrichment: 248 recipes, 147 sources, 200 inbox items, 39 candidates, 40 evidence rows, 52 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
     - "Cohort item 2 approved/promoted: Ground Beef Bulgogi and Spicy Ground Pork Bulgogi; both linked to YouTube + creator pages and Mleté mäso concept."
     - "Cohort item 3 approved as exact duplicate: existing Mapo Tofu enriched with Aaron & Claire YouTube + creator page, Rýchle tag, and Mleté mäso concept."
-    - "QA classification correction: Gochujang is now attached as a culinary condiment concept to all five pilot candidates where it is central; noodle/rice/potato main ingredients remain intact."
+    - "QA classification correction: Gochujang is attached as a culinary condiment concept to all five pilot candidates where it is central."
+    - "Taxonomy correction: unpromoted pilot candidates no longer use Ryža/Rezance as main_ingredient; they carry provisional base_component instead. Gamja Jorim keeps Zemiaky because potatoes define the dish."
+    - "Repository semantics updated and merged via PR #9, squash commit 5f853a3f15a9497ae2acfb06d14eddc2382bf4c0."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
