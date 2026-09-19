@@ -160,8 +160,10 @@ Responsibilities:
 Current semantic rules:
 
 - `protein` represents the known protein species/category, not its physical form;
-- `main_ingredient` is a coarse practical pantry/menu-planning dimension;
-- forms such as `Mleté mäso` and specific reusable ingredients such as `Italian Sausage` or `Guanciale` belong in culinary concepts when useful;
+- `main_ingredient` is a dominant defining non-protein ingredient when one is genuinely meaningful; it must not default to rice/noodles/pasta merely because they form the dish's starch base;
+- `side_dish` is reserved for an actual accompaniment, not an integrated starch/noodle base;
+- while the creator pilot is evaluating the missing base dimension, candidate JSON may use provisional `base_component` values such as `Ryža` or `Rezance`; agents must not assume this is already a stable schema field;
+- forms such as `Mleté mäso` and specific reusable ingredients/condiments such as `Gochujang`, `Italian Sausage`, or `Guanciale` belong in culinary concepts when useful;
 - tags describe properties of the dish rather than arbitrary ingredients or provenance;
 - prep/cook time, servings, and similar fields remain NULL when unsupported;
 - non-recipe content may legitimately produce zero recipe candidates.
@@ -365,7 +367,7 @@ The Aaron & Claire pilot should pause for review rather than continue blindly if
 - provenance is assigned incorrectly;
 - rerunning a source creates duplicate inbox/evidence/candidate state;
 - promotion writes to the wrong existing recipe;
-- a new schema requirement appears;
+- a new schema requirement appears, including a repeated need for a structural base/component dimension;
 - agent decisions repeatedly require taxonomy exceptions;
 - a systematic QA failure is found.
 
