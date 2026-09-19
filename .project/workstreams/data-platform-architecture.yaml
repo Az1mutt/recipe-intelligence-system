@@ -37,6 +37,14 @@ current_state: >
   egg-led dishes may use protein=Vajcia. Live counts are 250 recipes, 153 sources,
   200 inbox items, 39 candidates, 40 evidence rows, and 54 culinary concepts.
   Pilot candidate statuses are 4 promoted, 4 duplicate, and 17 needs_review.
+  A direct user-submitted SAMUKICHI mushroom video was also ingested outside the
+  creator pilot under auto_after_validation. It resolved cleanly, deduped as unique,
+  and promoted as Water-First Golden Brown Mushrooms with Huby as a primary key
+  ingredient concept, Butter and Soy Sauce as secondary ingredient/condiment
+  concepts, and Water-First Mushroom Browning as a primary technique concept.
+  Cuisine is intentionally NULL because creator nationality does not define dish
+  cuisine. Fresh live counts are now 251 recipes, 154 sources, 201 inbox items,
+  40 candidates, 42 evidence rows, and 57 culinary concepts.
 
 exact_next_action: >
   Continue explicit review with cohort item 5, the three-recipe Kimchi Fried Rice
@@ -133,7 +141,7 @@ verification:
   last_verified: "2026-09-19"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after Japanese Dinners review: 250 recipes, 153 sources, 200 inbox items, 39 candidates, 40 evidence rows, 54 culinary concepts."
+    - "Fresh live counts after direct SAMUKICHI mushroom ingestion: 251 recipes, 154 sources, 201 inbox items, 40 candidates, 42 evidence rows, 57 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
@@ -145,6 +153,7 @@ verification:
     - "Concept-first key ingredient model approved and merged via PR #10, squash commit 6af5201cb65bff36fc3f6685db71f97339fa51f5; new ingestion should prefer 1-3 primary key ingredient concepts and treat main_ingredient as legacy compatibility."
     - "Japanese Dinners cohort item: Teriyaki Chicken/Oyakodon/Chicken Katsudon enriched; Yaki Udon and Chicken Katsu promoted; Miso Ramen held for dedicated ramen review; Vajcia and Panko concepts created."
     - "Protein/key-concept overlap rule documented and merged via PR #11, squash commit 473fa60b4243061e555f0d158739eb2f92b0099b."
+    - "Direct user submission https://www.youtube.com/watch?v=6Aa3aFccue8 resolved and auto-promoted as Water-First Golden Brown Mushrooms; new concepts Huby, Soy Sauce, and Water-First Mushroom Browning created."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
