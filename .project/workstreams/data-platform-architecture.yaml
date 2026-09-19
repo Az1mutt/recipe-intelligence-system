@@ -18,31 +18,28 @@ current_gate: >
   promotion model remain reliable at creator scale.
 
 current_state: >
-  Ingestion contract v1 is implemented and previously verified against both
-  single-source acceptance cases and a heterogeneous six-source batch. Agent
-  Contract v1 is now documented in docs/agent-contract-v1.md and defines five
-  explicit roles: Discovery, Resolver, Classification, QA/Review, and Promotion
-  Executor. The contract establishes minimum write scopes, escalation conditions,
-  model-strength tiers, retry/resume behavior, creator-pilot stop conditions, and
-  a 10-15 video Aaron & Claire pilot specification. Autonomous agent workers are
-  not implemented yet; during the pilot this specialist chat may simulate the
-  orchestrator/senior-reviewer role while each stage follows the future agent
-  boundaries. Agent Contract v1 and its supporting documentation were merged to
-  main through PR #8 on 2026-09-19. The most recent verified live database snapshot remains 2026-09-10
-  at 33 public tables, 246 recipes, 142 sources, 191 inbox items, 14 candidates,
-  17 evidence rows, and 52 culinary concepts. A fresh 2026-09-19 count refresh
-  was attempted but the Supabase connection timed out, so those counts must not
-  be treated as freshly re-verified today.
+  Ingestion contract v1 and Agent Contract v1 are both documented. The Aaron &
+  Claire creator-scale pilot has now completed the Discovery stage. Supabase was
+  restored from a paused state on 2026-09-19 and is ACTIVE_HEALTHY. A bounded
+  10-video cohort is staged in recipe_inbox: one previously verified Ssamjang
+  source is reused as a control and nine newly discovered YouTube sources were
+  inserted with review_policy=explicit_review, content_resolution_status=pending,
+  and pilot metadata that preserves creator identity, cohort order, expected
+  recipe-count hints, and the existing Aaron and Claire channel-review collection
+  reference. The live database is freshly verified at 246 recipes, 142 sources,
+  200 inbox items, 14 candidates, 17 evidence rows, and 52 culinary concepts.
+  Autonomous agent workers are not implemented yet; this specialist chat is
+  executing the pilot according to the Agent Contract boundaries so that each
+  future role can be evaluated from observed behavior.
 
 exact_next_action: >
-  Enumerate a bounded cohort of 10-15 Aaron & Claire videos for the first
-  creator-scale pilot. Preserve creator/channel grouping, include a heterogeneous
-  mix of single-recipe and multi-recipe sources, reuse the previously validated
-  Ssamjang video as a control case if useful, stage new discoveries with
-  explicit_review, and execute the cohort through the Agent Contract v1 pipeline:
-  Discovery -> Resolver -> Classification -> QA -> explicit review -> deterministic
-  Promotion. Stop after the cohort for an agent-readiness audit before any broader
-  channel crawl.
+  Execute the Resolver stage for the nine new Aaron & Claire pilot sources.
+  Resolve YouTube metadata and descriptions first, follow creator-owned written
+  recipe pages where available, persist evidence with correct source_content vs
+  creator_reference roles, and leave any access limitations explicit. Do not
+  classify or promote recipes until resolver evidence is assembled for the pilot
+  sources. The existing Ssamjang control remains completed and should be used for
+  comparison rather than reprocessed destructively.
 
 blockers:
   - "No known architecture blocker for starting the Aaron & Claire pilot."
@@ -50,10 +47,7 @@ blockers:
       Direct YouTube fetch remains inconsistent, but partial-resolution and
       external_reference fallback semantics are already part of the validated
       ingestion contract.
-  - >
-      Fresh live Supabase counts could not be refreshed on 2026-09-19 because
-      the connector timed out; this does not block the pilot but makes current
-      row counts stale until the next successful verification.
+  - "No current Supabase availability blocker; the project is ACTIVE_HEALTHY after restore on 2026-09-19."
 
 dependencies:
   - project: "External source ecosystem"
@@ -72,7 +66,7 @@ dependencies:
       supervised pilot.
 
 important_open_loops:
-  - "Enumerate and stage the first 10-15 video Aaron & Claire pilot cohort."
+  - "Resolve evidence for the nine newly staged Aaron & Claire pilot sources."
   - >
       Measure which Agent Contract roles are genuinely mechanical vs which require
       strong reasoning or human review.
@@ -104,9 +98,6 @@ portfolio:
 
 stale_or_unknown:
   - >
-      Live database counts are last verified 2026-09-10 because the attempted
-      2026-09-19 refresh timed out.
-  - >
       Creator-layer normalization remains intentionally undecided pending the
       first real creator/channel pilot.
   - >
@@ -117,6 +108,9 @@ stale_or_unknown:
 verification:
   last_verified: "2026-09-19"
   sources:
+    - "Live Supabase restored and verified ACTIVE_HEALTHY on 2026-09-19."
+    - "Fresh live counts after Discovery staging: 246 recipes, 142 sources, 200 inbox items, 14 candidates, 17 evidence rows, 52 culinary concepts."
+    - "Aaron & Claire Agent Contract v1 pilot cohort: 10 inbox rows total, 1 existing control, 9 new explicit-review discoveries."
     - "docs/ingestion-contract-v1.md on repository main, previously validated against live ingestion cases."
     - "docs/agent-contract-v1.md created for the Aaron & Claire creator-scale pilot."
     - "Repository AGENTS.md uses risk-based Git workflow and permits automatic merge after approved scope and checks."
