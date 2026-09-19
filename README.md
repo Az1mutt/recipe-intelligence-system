@@ -34,7 +34,7 @@ source URL / video / article
 -> recipes + sources + bridges + intelligence links
 ```
 
-A standalone backend API, frontend, and autonomous bulk-ingestion service are still planned rather than implemented. Current ingestion is an operational workflow over the live database, not yet a packaged application service.
+A standalone backend API, frontend, and autonomous bulk-ingestion service are still planned rather than implemented. Current ingestion is an operational workflow over the live database, not yet a packaged application service. Agent Contract v1 now defines the intended Discovery -> Resolver -> Classification -> QA -> Promotion role boundaries for the first Aaron & Claire creator-scale pilot; those autonomous agents are not implemented yet.
 
 ## Documentation
 
@@ -43,6 +43,7 @@ Start with:
 - [Database architecture](docs/database-architecture.md)
 - [Current live state](docs/database-current-state.md)
 - [Ingestion contract v1](docs/ingestion-contract-v1.md)
+- [Agent contract v1](docs/agent-contract-v1.md)
 - [Database access model](docs/database-access-model.md)
 - [Historical baseline and migration policy](docs/database-baseline-and-migrations.md)
 
