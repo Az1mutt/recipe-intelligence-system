@@ -56,14 +56,24 @@ current_state: >
   uses protein=Vajcia; Tuna Mayo uses protein=Ryba. Fresh live counts are now
   260 recipes, 158 sources, 201 inbox items, 40 candidates, 42 evidence rows,
   and 65 culinary concepts. Pilot candidate statuses are 13 promoted, 4 duplicate,
-  and 8 needs_review.
+  and 8 needs_review. Cohort item 8 is now complete: Teriyaki Chicken One Pot
+  Rice was explicitly approved and promoted as a separate recipe identity rather
+  than a duplicate of plain Teriyaki Chicken. It stores cuisine=Japonská,
+  protein=Kuracie mäso, servings=4, tag=Jedlo z jedného hrnca, and Teriyaki Sauce
+  as a primary concept; main_ingredient, side_dish, and preparation_type remain
+  NULL, while Ryža stays provisional base_component in candidate data. Fresh live
+  counts are now 261 recipes, 160 sources, 201 inbox items, 40 candidates,
+  42 evidence rows, and 65 culinary concepts. Pilot candidate statuses are
+  14 promoted, 4 duplicate, and 7 needs_review.
 
 exact_next_action: >
-  Skip the intentionally held cohort item 7 for now and continue explicit review
-  with cohort item 8, Teriyaki Chicken One Pot Rice. Re-evaluate it under the
-  concept-first ingredient model, including protein, Teriyaki Sauce, and Ryža as
-  a provisional integrated base, then promote only after explicit approval.
-  Keep Miso Ramen and the partial 2024 Gochujang Noodles candidate on hold.
+  Continue explicit review with cohort item 9, the four-recipe Gochujang Pt.2
+  source: Gamja Jorim (Spicy Braised Potatoes), Gochujang Fried Rice, Gochujang
+  Stir-Fried Noodles, and Gochujang Chicken Rice Bowl. Re-evaluate them under the
+  concept-first ingredient model, especially Gochujang as a primary condiment
+  concept and the distinction between defining ingredient versus provisional
+  rice/noodle base. Keep Miso Ramen and the partial 2024 Gochujang Noodles
+  candidate on hold.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -92,7 +102,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 8 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 7 Aaron & Claire pilot candidates."
   - >
       Capture the SAMUKICHI source-intent finding in the post-pilot contract audit:
       distinguish what a source primarily does (recipe, multi_recipe, technique_demo,
@@ -158,7 +168,7 @@ verification:
   last_verified: "2026-09-21"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after Fire Noodles cohort promotion: 260 recipes, 158 sources, 201 inbox items, 40 candidates, 42 evidence rows, 65 culinary concepts."
+    - "Fresh live counts after Teriyaki Chicken One Pot Rice promotion: 261 recipes, 160 sources, 201 inbox items, 40 candidates, 42 evidence rows, 65 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
@@ -174,6 +184,7 @@ verification:
     - "SAMUKICHI review exposed a source-intent nuance: the source primarily teaches a technique while also yielding a recipe; candidate model now records source intent provisionally and post-pilot should evaluate source-to-concept teaches/demonstrates links."
     - "Cohort item 5 completed: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried Noodles promoted; source marked multi_recipe; Kimchi and Syr concepts created."
     - "Cohort item 6 completed: six Fire Noodles recipe hacks promoted as separate identities linked through the shared Korean Fire Noodles component concept; new concepts Peanut Butter, Tuna, Mayonnaise, Crispy Noodle Pancake, and Cold Noodle Preparation were created alongside the shared parent."
+    - "Cohort item 8 completed: Teriyaki Chicken One Pot Rice promoted as a unique one-pot rice identity with Japonská cuisine, Kuracie mäso protein, 4 servings, Jedlo z jedného hrnca tag, and primary Teriyaki Sauce concept; no forced preparation_type or legacy main_ingredient."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
