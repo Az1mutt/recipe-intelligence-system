@@ -43,16 +43,22 @@ current_state: >
   ingredient concept, Butter and Soy Sauce as secondary ingredient/condiment
   concepts, and Water-First Mushroom Browning as a primary technique concept.
   Cuisine is intentionally NULL because creator nationality does not define dish
-  cuisine. Fresh live counts are now 251 recipes, 154 sources, 201 inbox items,
-  40 candidates, 42 evidence rows, and 57 culinary concepts.
+  cuisine. Cohort item 5 is now also complete: Classic Kimchi Fried Rice, Volcano
+  Kimchi Fried Rice, and Kimchi Fried Noodles were all explicitly approved and
+  promoted. The source is marked primary_content_type=multi_recipe. New Kimchi and
+  Syr concepts were created; Kimchi is primary across the three recipes, with
+  recipe-specific concepts such as Vajcia, Gochujang, and Mleté mäso retained by
+  role. Fresh live counts are now 254 recipes, 156 sources, 201 inbox items,
+  40 candidates, 42 evidence rows, and 59 culinary concepts. Pilot candidate
+  statuses are 7 promoted, 4 duplicate, and 14 needs_review.
 
 exact_next_action: >
-  Continue explicit review with cohort item 5, the three-recipe Kimchi Fried Rice
-  video: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried
-  Noodles. Re-evaluate them under the concept-first ingredient model, especially
-  Kimchi as a likely primary key ingredient and Ryža/Rezance as provisional base
-  components, then promote only after explicit approval. Keep Miso Ramen and the
-  partial 2024 Gochujang Noodles candidate on hold.
+  Continue explicit review with cohort item 6, the six-recipe Korean Fire Noodles
+  video. Re-evaluate Fire Noodles with Peanut Butter, Tuna Mayo Fire Noodles,
+  Creamy Fire Noodles, Fire Noodles Ramyun Pancake, Cold Fire Noodles, and Fire
+  Noodles with Steamed Egg & Cheese under the concept-first ingredient model and
+  source-intent check, then promote only after explicit approval. Keep Miso Ramen
+  and the partial 2024 Gochujang Noodles candidate on hold.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -81,7 +87,13 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 17 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 14 Aaron & Claire pilot candidates."
+  - >
+      Capture the SAMUKICHI source-intent finding in the post-pilot contract audit:
+      distinguish what a source primarily does (recipe, multi_recipe, technique_demo,
+      ingredient_explainer, learning content) from recipe extraction. Evaluate a
+      future source-to-concept relationship such as teaches/demonstrates separately
+      from recipe_concepts uses-technique links.
   - >
       Post-pilot, decide whether provisional base_component should become a
       first-class lookup/column or be represented through culinary concepts.
@@ -138,10 +150,10 @@ stale_or_unknown:
       Exact identity of the 2024 Gochujang Noodles source remains unresolved.
 
 verification:
-  last_verified: "2026-09-19"
+  last_verified: "2026-09-21"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after direct SAMUKICHI mushroom ingestion: 251 recipes, 154 sources, 201 inbox items, 40 candidates, 42 evidence rows, 57 culinary concepts."
+    - "Fresh live counts after Kimchi Fried Rice cohort promotion: 254 recipes, 156 sources, 201 inbox items, 40 candidates, 42 evidence rows, 59 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
@@ -154,6 +166,8 @@ verification:
     - "Japanese Dinners cohort item: Teriyaki Chicken/Oyakodon/Chicken Katsudon enriched; Yaki Udon and Chicken Katsu promoted; Miso Ramen held for dedicated ramen review; Vajcia and Panko concepts created."
     - "Protein/key-concept overlap rule documented and merged via PR #11, squash commit 473fa60b4243061e555f0d158739eb2f92b0099b."
     - "Direct user submission https://www.youtube.com/watch?v=6Aa3aFccue8 resolved and auto-promoted as Water-First Golden Brown Mushrooms; new concepts Huby, Soy Sauce, and Water-First Mushroom Browning created."
+    - "SAMUKICHI review exposed a source-intent nuance: the source primarily teaches a technique while also yielding a recipe; candidate model now records source intent provisionally and post-pilot should evaluate source-to-concept teaches/demonstrates links."
+    - "Cohort item 5 completed: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried Noodles promoted; source marked multi_recipe; Kimchi and Syr concepts created."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
