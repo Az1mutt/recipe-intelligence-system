@@ -48,17 +48,22 @@ current_state: >
   promoted. The source is marked primary_content_type=multi_recipe. New Kimchi and
   Syr concepts were created; Kimchi is primary across the three recipes, with
   recipe-specific concepts such as Vajcia, Gochujang, and Mleté mäso retained by
-  role. Fresh live counts are now 254 recipes, 156 sources, 201 inbox items,
-  40 candidates, 42 evidence rows, and 59 culinary concepts. Pilot candidate
-  statuses are 7 promoted, 4 duplicate, and 14 needs_review.
+  role. Cohort item 6 is now complete as well: all six Fire Noodles recipe hacks
+  were explicitly approved and promoted as separate recipe identities over the
+  shared Korean Fire Noodles component concept. Recipe-specific concepts distinguish
+  Peanut Butter, Tuna + Mayonnaise, Cream + Huby, Crispy Noodle Pancake, Cold Noodle
+  Preparation, and the Vajcia + Syr steamed-egg variant. The steamed-egg variant
+  uses protein=Vajcia; Tuna Mayo uses protein=Ryba. Fresh live counts are now
+  260 recipes, 158 sources, 201 inbox items, 40 candidates, 42 evidence rows,
+  and 65 culinary concepts. Pilot candidate statuses are 13 promoted, 4 duplicate,
+  and 8 needs_review.
 
 exact_next_action: >
-  Continue explicit review with cohort item 6, the six-recipe Korean Fire Noodles
-  video. Re-evaluate Fire Noodles with Peanut Butter, Tuna Mayo Fire Noodles,
-  Creamy Fire Noodles, Fire Noodles Ramyun Pancake, Cold Fire Noodles, and Fire
-  Noodles with Steamed Egg & Cheese under the concept-first ingredient model and
-  source-intent check, then promote only after explicit approval. Keep Miso Ramen
-  and the partial 2024 Gochujang Noodles candidate on hold.
+  Skip the intentionally held cohort item 7 for now and continue explicit review
+  with cohort item 8, Teriyaki Chicken One Pot Rice. Re-evaluate it under the
+  concept-first ingredient model, including protein, Teriyaki Sauce, and Ryža as
+  a provisional integrated base, then promote only after explicit approval.
+  Keep Miso Ramen and the partial 2024 Gochujang Noodles candidate on hold.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -87,7 +92,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 14 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 8 Aaron & Claire pilot candidates."
   - >
       Capture the SAMUKICHI source-intent finding in the post-pilot contract audit:
       distinguish what a source primarily does (recipe, multi_recipe, technique_demo,
@@ -153,7 +158,7 @@ verification:
   last_verified: "2026-09-21"
   sources:
     - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after Kimchi Fried Rice cohort promotion: 254 recipes, 156 sources, 201 inbox items, 40 candidates, 42 evidence rows, 59 culinary concepts."
+    - "Fresh live counts after Fire Noodles cohort promotion: 260 recipes, 158 sources, 201 inbox items, 40 candidates, 42 evidence rows, 65 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
     - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
     - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
@@ -168,6 +173,7 @@ verification:
     - "Direct user submission https://www.youtube.com/watch?v=6Aa3aFccue8 resolved and auto-promoted as Water-First Golden Brown Mushrooms; new concepts Huby, Soy Sauce, and Water-First Mushroom Browning created."
     - "SAMUKICHI review exposed a source-intent nuance: the source primarily teaches a technique while also yielding a recipe; candidate model now records source intent provisionally and post-pilot should evaluate source-to-concept teaches/demonstrates links."
     - "Cohort item 5 completed: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried Noodles promoted; source marked multi_recipe; Kimchi and Syr concepts created."
+    - "Cohort item 6 completed: six Fire Noodles recipe hacks promoted as separate identities linked through the shared Korean Fire Noodles component concept; new concepts Peanut Butter, Tuna, Mayonnaise, Crispy Noodle Pancake, and Cold Noodle Preparation were created alongside the shared parent."
     - "docs/agent-contract-v1.md merged to main via PR #8."
 
 sync:
