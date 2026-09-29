@@ -34,37 +34,23 @@ current_state: >
   1-3 primary key ingredient concepts, while recipes.main_ingredient_id remains
   legacy compatibility. Protein and key concepts may overlap by recipe role; e.g.
   Oyakodon keeps protein=Kuracie mäso and uses Vajcia as a primary concept, while
-  egg-led dishes may use protein=Vajcia. Live counts are 250 recipes, 153 sources,
-  200 inbox items, 39 candidates, 40 evidence rows, and 54 culinary concepts.
-  Pilot candidate statuses are 4 promoted, 4 duplicate, and 17 needs_review.
-  A direct user-submitted SAMUKICHI mushroom video was also ingested outside the
-  creator pilot under auto_after_validation. It resolved cleanly, deduped as unique,
-  and promoted as Water-First Golden Brown Mushrooms with Huby as a primary key
-  ingredient concept, Butter and Soy Sauce as secondary ingredient/condiment
-  concepts, and Water-First Mushroom Browning as a primary technique concept.
-  Cuisine is intentionally NULL because creator nationality does not define dish
-  cuisine. Cohort item 5 is now also complete: Classic Kimchi Fried Rice, Volcano
-  Kimchi Fried Rice, and Kimchi Fried Noodles were all explicitly approved and
-  promoted. The source is marked primary_content_type=multi_recipe. New Kimchi and
-  Syr concepts were created; Kimchi is primary across the three recipes, with
-  recipe-specific concepts such as Vajcia, Gochujang, and Mleté mäso retained by
-  role. Cohort item 6 is now complete as well: all six Fire Noodles recipe hacks
-  were explicitly approved and promoted as separate recipe identities over the
-  shared Korean Fire Noodles component concept. Recipe-specific concepts distinguish
-  Peanut Butter, Tuna + Mayonnaise, Cream + Huby, Crispy Noodle Pancake, Cold Noodle
-  Preparation, and the Vajcia + Syr steamed-egg variant. The steamed-egg variant
-  uses protein=Vajcia; Tuna Mayo uses protein=Ryba. Fresh live counts are now
-  260 recipes, 158 sources, 201 inbox items, 40 candidates, 42 evidence rows,
-  and 65 culinary concepts. Pilot candidate statuses are 13 promoted, 4 duplicate,
-  and 8 needs_review. Cohort item 8 is now complete: Teriyaki Chicken One Pot
-  Rice was explicitly approved and promoted as a separate recipe identity rather
-  than a duplicate of plain Teriyaki Chicken. It stores cuisine=Japonská,
-  protein=Kuracie mäso, servings=4, tag=Jedlo z jedného hrnca, and Teriyaki Sauce
-  as a primary concept; main_ingredient, side_dish, and preparation_type remain
-  NULL, while Ryža stays provisional base_component in candidate data. Fresh live
-  counts are now 261 recipes, 160 sources, 201 inbox items, 40 candidates,
-  42 evidence rows, and 65 culinary concepts. Pilot candidate statuses are
-  14 promoted, 4 duplicate, and 7 needs_review.
+  egg-led dishes may use protein=Vajcia. A direct user-submitted SAMUKICHI mushroom
+  video was ingested outside the creator pilot under auto_after_validation and
+  promoted as Water-First Golden Brown Mushrooms, exposing the source-intent nuance
+  between recipe extraction and technique-teaching content. Cohort item 5 completed
+  the three Kimchi Fried Rice variants and cohort item 6 completed six Fire Noodles
+  recipe hacks linked through a shared Korean Fire Noodles component concept.
+  Cohort item 8 completed Teriyaki Chicken One Pot Rice as a unique one-pot rice
+  identity with Japonská cuisine, Kuracie mäso protein, 4 servings, one-pot tag,
+  and primary Teriyaki Sauce concept. A Facebook Reel direct submission that was
+  initially blocked by source access was later resolved from user-supplied source
+  text and promoted as Bulgur Meatball Noodle Soup. The source is now resolved and
+  completed with manual_context evidence. Because the source only says minced meat,
+  protein and cuisine remain NULL rather than guessed; Mleté mäso, Bulgur, and
+  Vermicelli are primary recipe concepts. Fresh live counts are 263 recipes,
+  161 sources, 202 inbox items, 41 candidates, 43 evidence rows, and 67 culinary
+  concepts. Pilot candidate statuses remain 14 promoted, 4 duplicate, and
+  7 needs_review.
 
 exact_next_action: >
   Continue explicit review with cohort item 9, the four-recipe Gochujang Pt.2
@@ -90,9 +76,9 @@ dependencies:
     workstream: "Resolver inputs"
     dependency: >
       Creator-scale quality depends on legitimately accessible metadata/content,
-      creator-written references, or trustworthy external references. Failed or
-      partial acquisition must remain explicit and must never be replaced with
-      invented source content.
+      creator-written references, trustworthy external references, or explicit
+      manual user context. Failed or partial acquisition must remain explicit and
+      must never be replaced with invented source content.
   - project: "Project OS / Agent Architecture"
     workstream: "Cross-project agent platform"
     dependency: >
@@ -130,7 +116,7 @@ important_open_loops:
   - "Perform post-pilot Agent Contract v1 audit before expanding the channel crawl."
   - >
       Measure which roles proved mechanical vs which required strong reasoning or
-      human review, including the partial-source Gochujang case.
+      human review, including partial-source and manual-context recovery cases.
   - >
       Decide whether a normalized Creator entity is warranted after this pilot;
       current source/content-collection provenance remains sufficient so far.
@@ -147,11 +133,12 @@ portfolio:
   milestone: true
   signal: >
     Recipe Intelligence has now exercised all five conceptual roles of Agent
-    Contract v1 in a real creator-scale cohort, including the first deterministic
-    Promotion Executor run after explicit human approval. The system preserved
-    evidence provenance, kept one ambiguous source on hold, and promoted two
-    meaningful variants with narrow, auditable writes. The remaining proof point
-    is completion of reviewed dispositions followed by the post-pilot audit.
+    Contract v1 in a real creator-scale cohort and has also demonstrated recovery
+    of an inaccessible social source through explicit manual_context evidence.
+    The system preserved provenance, refused to guess inaccessible content, then
+    resumed deterministically once the user supplied the source text. The remaining
+    proof point is completion of reviewed pilot dispositions followed by the
+    post-pilot audit.
 
 stale_or_unknown:
   - >
@@ -165,27 +152,23 @@ stale_or_unknown:
       Exact identity of the 2024 Gochujang Noodles source remains unresolved.
 
 verification:
-  last_verified: "2026-09-21"
+  last_verified: "2026-09-29"
   sources:
-    - "Live Supabase ACTIVE_HEALTHY after project restore."
-    - "Fresh live counts after Teriyaki Chicken One Pot Rice promotion: 261 recipes, 160 sources, 201 inbox items, 40 candidates, 42 evidence rows, 65 culinary concepts."
+    - "Live Supabase queried after Facebook direct-submission recovery."
+    - "Fresh live counts: 263 recipes, 161 sources, 202 inbox items, 41 candidates, 43 evidence rows, 67 culinary concepts."
     - "Aaron & Claire cohort: 10 sources total; 1 completed control + 9 new explicit-review sources."
-    - "Resolver: 8 new sources resolved, 1 new source partial with explicit resolution_error."
-    - "Classification/QA: 25 new candidates staged; one deliberate partial-source hold."
-    - "Cohort item 2 approved/promoted: Ground Beef Bulgogi and Spicy Ground Pork Bulgogi; both linked to YouTube + creator pages and Mleté mäso concept."
-    - "Cohort item 3 approved as exact duplicate: existing Mapo Tofu enriched with Aaron & Claire YouTube + creator page, Rýchle tag, and Mleté mäso concept."
-    - "QA classification correction: Gochujang is attached as a culinary condiment concept to all five pilot candidates where it is central."
-    - "Taxonomy correction: unpromoted pilot candidates no longer use Ryža/Rezance as main_ingredient; they carry provisional base_component instead. Gamja Jorim keeps Zemiaky because potatoes define the dish."
-    - "Repository base/main-ingredient semantics updated and merged via PR #9, squash commit 5f853a3f15a9497ae2acfb06d14eddc2382bf4c0."
-    - "Concept-first key ingredient model approved and merged via PR #10, squash commit 6af5201cb65bff36fc3f6685db71f97339fa51f5; new ingestion should prefer 1-3 primary key ingredient concepts and treat main_ingredient as legacy compatibility."
-    - "Japanese Dinners cohort item: Teriyaki Chicken/Oyakodon/Chicken Katsudon enriched; Yaki Udon and Chicken Katsu promoted; Miso Ramen held for dedicated ramen review; Vajcia and Panko concepts created."
-    - "Protein/key-concept overlap rule documented and merged via PR #11, squash commit 473fa60b4243061e555f0d158739eb2f92b0099b."
-    - "Direct user submission https://www.youtube.com/watch?v=6Aa3aFccue8 resolved and auto-promoted as Water-First Golden Brown Mushrooms; new concepts Huby, Soy Sauce, and Water-First Mushroom Browning created."
-    - "SAMUKICHI review exposed a source-intent nuance: the source primarily teaches a technique while also yielding a recipe; candidate model now records source intent provisionally and post-pilot should evaluate source-to-concept teaches/demonstrates links."
-    - "Cohort item 5 completed: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried Noodles promoted; source marked multi_recipe; Kimchi and Syr concepts created."
-    - "Cohort item 6 completed: six Fire Noodles recipe hacks promoted as separate identities linked through the shared Korean Fire Noodles component concept; new concepts Peanut Butter, Tuna, Mayonnaise, Crispy Noodle Pancake, and Cold Noodle Preparation were created alongside the shared parent."
-    - "Cohort item 8 completed: Teriyaki Chicken One Pot Rice promoted as a unique one-pot rice identity with Japonská cuisine, Kuracie mäso protein, 4 servings, Jedlo z jedného hrnca tag, and primary Teriyaki Sauce concept; no forced preparation_type or legacy main_ingredient."
-    - "docs/agent-contract-v1.md merged to main via PR #8."
+    - "Resolver: 8 new pilot sources resolved, 1 new pilot source partial with explicit resolution_error."
+    - "Classification/QA: 25 new pilot candidates staged; one deliberate partial-source hold."
+    - "Cohort item 2 approved/promoted: Ground Beef Bulgogi and Spicy Ground Pork Bulgogi."
+    - "Cohort item 3 approved as exact duplicate: existing Mapo Tofu enriched with Aaron & Claire sources and concepts."
+    - "Japanese Dinners cohort item: Teriyaki Chicken/Oyakodon/Chicken Katsudon enriched; Yaki Udon and Chicken Katsu promoted; Miso Ramen held."
+    - "Cohort item 5 completed: Classic Kimchi Fried Rice, Volcano Kimchi Fried Rice, and Kimchi Fried Noodles promoted."
+    - "Cohort item 6 completed: six Fire Noodles recipe hacks promoted as separate identities linked through Korean Fire Noodles."
+    - "Cohort item 8 completed: Teriyaki Chicken One Pot Rice promoted as a unique one-pot rice identity."
+    - "Direct SAMUKICHI source promoted as Water-First Golden Brown Mushrooms and exposed the source-intent/technique-teaching nuance."
+    - "Facebook Reel 1122400106794669 initially failed direct access, was held without guessing, then resolved from user-supplied manual_context and promoted as Bulgur Meatball Noodle Soup."
+    - "Bulgur Meatball Noodle Soup uses NULL protein/cuisine because the source does not specify meat species or cuisine; primary concepts are Mleté mäso, Bulgur, and Vermicelli."
+    - "Repository concept-first ingredient model and protein/key-concept overlap rules remain documented on main."
 
 sync:
   status: "synced"
