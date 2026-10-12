@@ -45,18 +45,22 @@ current_state: >
   Its source label "Asian" was not forced into cuisine because no matching controlled
   cuisine exists. New Garlic concept was created. Firecrawl is not yet an autonomous
   agent backend or deployed Resolver service; only the supervised acquisition path
-  is verified. Fresh live counts are 264 recipes, 162 sources, 203 inbox items,
-  42 candidates, 44 evidence rows, and 68 culinary concepts. Pilot candidate statuses
-  remain 14 promoted, 4 duplicate, and 7 needs_review.
+  is verified. Cohort item 9 is now complete: Firecrawl upgraded the creator-page
+  evidence for the four-recipe Gochujang Pt.2 source, and all four recipes were
+  explicitly approved and promoted. Gamja Jorim uses primary Zemiaky + Gochujang
+  concepts with no new legacy main_ingredient; Gochujang Fried Rice uses default
+  Hovädzie mäso plus primary Gochujang + Mleté mäso; Gochujang Stir-Fried Noodles
+  uses default Bravčové mäso with Udon as provisional base and primary Gochujang +
+  Mleté mäso; Gochujang Chicken Rice Bowl uses Kuracie mäso and primary Gochujang.
+  New Zemiaky concept was created. Fresh live counts are 268 recipes, 164 sources,
+  203 inbox items, 42 candidates, 44 evidence rows, and 69 culinary concepts.
+  Pilot candidate statuses are 18 promoted, 4 duplicate, and 3 needs_review.
 
 exact_next_action: >
-  Continue explicit review with cohort item 9, the four-recipe Gochujang Pt.2
-  source: Gamja Jorim (Spicy Braised Potatoes), Gochujang Fried Rice, Gochujang
-  Stir-Fried Noodles, and Gochujang Chicken Rice Bowl. Re-evaluate them under the
-  concept-first ingredient model, especially Gochujang as a primary condiment
-  concept and the distinction between defining ingredient versus provisional
-  rice/noodle base. Keep Miso Ramen and the partial 2024 Gochujang Noodles
-  candidate on hold.
+  Continue explicit review with cohort item 10, Jjajangmyeon, as the last clean
+  unresolved pilot candidate. Re-evaluate it against creator evidence and the
+  concept-first ingredient model, then promote only after explicit approval.
+  Keep Miso Ramen and the partial 2024 Gochujang Noodles candidate on hold.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -87,7 +91,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 7 Aaron & Claire pilot candidates."
+  - "Complete explicit review of the remaining 3 Aaron & Claire pilot candidates."
   - >
       Capture the SAMUKICHI source-intent finding in the post-pilot contract audit:
       distinguish what a source primarily does (recipe, multi_recipe, technique_demo,
@@ -160,15 +164,18 @@ stale_or_unknown:
       Exact identity of the 2024 Gochujang Noodles source remains unresolved.
 
 verification:
-  last_verified: "2026-10-02"
+  last_verified: "2026-10-12"
   sources:
     - "Live Supabase queried after Firecrawl-resolved Garlic Butter Rice ingestion."
-    - "Fresh live counts: 264 recipes, 162 sources, 203 inbox items, 42 candidates, 44 evidence rows, 68 culinary concepts."
-    - "Aaron & Claire pilot statuses remain 14 promoted, 4 duplicate, and 7 needs_review."
+    - "Fresh live counts after Gochujang Pt.2 promotion: 268 recipes, 164 sources, 203 inbox items, 42 candidates, 44 evidence rows, 69 culinary concepts."
+    - "Aaron & Claire pilot statuses are now 18 promoted, 4 duplicate, and 3 needs_review."
     - "Firecrawl successfully fetched https://aaronandclaire.com/garlic-butter-rice/ with creator-page title, author, ingredient/procedure content, 6 servings, 10-minute prep, 30-minute cook, freezer-friendly claim, source cuisine label Asian, and embedded YouTube link."
     - "Garlic Butter Rice deduped as unique versus existing Rice pilaf and other rice recipes, then auto-promoted under the direct-submission policy."
     - "Garlic Butter Rice recipe ID 3f1420c2-2cc2-4fdd-9823-fba340fdd65b; primary concepts Garlic and Butter; cuisine NULL; dish Príloha; preparation Varené; Vhodné na mrazenie tag."
     - "New Garlic culinary concept created as ingredient."
+    - "Cohort item 9 completed after Firecrawl creator-page re-resolution: Gamja Jorim, Gochujang Fried Rice, Gochujang Stir-Fried Noodles, and Gochujang Chicken Rice Bowl promoted as unique recipes."
+    - "New Zemiaky culinary concept created as ingredient; Gamja Jorim uses Zemiaky + Gochujang primary concepts without writing legacy main_ingredient."
+    - "Gochujang Fried Rice stores protein=Hovädzie mäso and 1 serving; Gochujang Stir-Fried Noodles stores protein=Bravčové mäso, provisional base_component=Udon, and 1 serving; Gochujang Chicken Rice Bowl stores protein=Kuracie mäso and keeps creator 2-3 servings as candidate text rather than forcing an integer."
     - "Facebook Reel 1122400106794669 was previously held on failed_access, then resolved from user-supplied manual_context and promoted as Bulgur Meatball Noodle Soup without guessing unsupported cuisine/protein."
     - "Repository concept-first ingredient model and protein/key-concept overlap rules remain documented on main."
 
