@@ -8,13 +8,15 @@ project:
   owner: "Recipe Intelligence technical specialist chat"
 
 status: "active"
-phase: "creator-scale-ingestion-pilot"
+phase: "agent-readiness-audit"
 
 current_gate: >
-  Validate Agent Contract v1 against a bounded Aaron & Claire creator/channel
-  cohort. Discovery, Resolver, Classification, and QA/Review have completed for
-  the first 10-video cohort. Explicit human review and deterministic promotion
-  are now in progress, after which the pilot must stop for an agent-readiness audit.
+  The bounded Aaron & Claire creator-scale ingestion pilot has completed all clean
+  reviewable dispositions. Nineteen new candidates were promoted, four were handled
+  as duplicates, and two candidates remain as deliberate holds rather than failed
+  work: Miso Ramen for a dedicated ramen-domain review and the partial 2024
+  Gochujang Noodles source for identity resolution. Stop creator expansion now and
+  complete the Agent Contract v1 readiness audit before any broader autonomous crawl.
 
 current_state: >
   Supabase is ACTIVE_HEALTHY. The Aaron & Claire Agent Contract v1 pilot contains
@@ -52,15 +54,27 @@ current_state: >
   Hovädzie mäso plus primary Gochujang + Mleté mäso; Gochujang Stir-Fried Noodles
   uses default Bravčové mäso with Udon as provisional base and primary Gochujang +
   Mleté mäso; Gochujang Chicken Rice Bowl uses Kuracie mäso and primary Gochujang.
-  New Zemiaky concept was created. Fresh live counts are 268 recipes, 164 sources,
-  203 inbox items, 42 candidates, 44 evidence rows, and 69 culinary concepts.
-  Pilot candidate statuses are 18 promoted, 4 duplicate, and 3 needs_review.
+  New Zemiaky concept was created. Cohort item 10 is now complete as well:
+  Firecrawl re-resolved the creator page and exposed that the exact source is a
+  Jaengban Jjajang variant rather than a generic baseline Jjajangmyeon. After
+  explicit approval it was promoted as Jaengban Jjajang (Jjajangmyeon), with
+  Kórejská cuisine, Bravčové mäso protein, Wok preparation, 2 servings, 15-minute
+  prep, 20-minute cook, primary Chunjang concept, secondary Morské plody concept,
+  and preference_status=adaptable because seafood is present in the full version
+  but the creator explicitly supports a simpler core without the extra ingredients.
+  New Chunjang and Morské plody concepts were created. All clean pilot candidates
+  are now dispositioned. Fresh live counts are 269 recipes, 166 sources, 203 inbox
+  items, 42 candidates, 44 evidence rows, and 71 culinary concepts. Pilot candidate
+  statuses are 19 promoted, 4 duplicate, and 2 needs_review; the two remaining
+  needs_review rows are the intentional Miso Ramen and 2024 Gochujang Noodles holds.
 
 exact_next_action: >
-  Continue explicit review with cohort item 10, Jjajangmyeon, as the last clean
-  unresolved pilot candidate. Re-evaluate it against creator evidence and the
-  concept-first ingredient model, then promote only after explicit approval.
-  Keep Miso Ramen and the partial 2024 Gochujang Noodles candidate on hold.
+  Run the post-pilot Agent Contract v1 readiness audit before expanding creator
+  ingestion. Review each role for what proved mechanical versus reasoning-heavy,
+  define the autonomous Resolver Service boundary including Firecrawl as backend
+  infrastructure, identify mandatory human-approval points, and capture model/data
+  decisions that must be settled before autonomous operation. Keep Miso Ramen and
+  the partial 2024 Gochujang Noodles candidate as explicit holds during the audit.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -69,8 +83,10 @@ blockers:
       the resolved 2022 Gochujang Stir-Fried Noodles recipe. It must not be
       promoted until identity is resolved or explicitly held.
   - >
-      Remaining creator/channel candidates still require explicit human review
-      before deterministic promotion.
+      Two creator candidates remain deliberately held: Miso Ramen requires a
+      dedicated ramen-domain review, and the partial 2024 Gochujang Noodles source
+      requires identity resolution against the now-promoted 2022 recipe. These
+      holds do not block the Agent Contract readiness audit.
 
 dependencies:
   - project: "External source ecosystem"
@@ -91,7 +107,7 @@ dependencies:
       pilot.
 
 important_open_loops:
-  - "Complete explicit review of the remaining 3 Aaron & Claire pilot candidates."
+  - "Carry the two intentional pilot holds explicitly into the audit: Miso Ramen and the partial 2024 Gochujang Noodles candidate."
   - >
       Capture the SAMUKICHI source-intent finding in the post-pilot contract audit:
       distinguish what a source primarily does (recipe, multi_recipe, technique_demo,
@@ -145,8 +161,11 @@ portfolio:
     Resolver flow. This reduces creator-page extraction friction while preserving
     provenance and leaves the future autonomous interface clean: agents can call a
     narrow Resolver service rather than own Firecrawl credentials directly. The
-    remaining proof point is completion of reviewed pilot dispositions followed by
-    the post-pilot audit and Resolver-service implementation decision.
+    creator-scale pilot has now completed all clean reviewable dispositions. The
+    remaining proof point is the post-pilot readiness audit itself: converting the
+    observed supervised workflow into explicit autonomous boundaries, approval gates,
+    and a Resolver-service implementation plan without pretending the agent runtime
+    already exists.
 
 stale_or_unknown:
   - >
@@ -167,8 +186,8 @@ verification:
   last_verified: "2026-10-12"
   sources:
     - "Live Supabase queried after Firecrawl-resolved Garlic Butter Rice ingestion."
-    - "Fresh live counts after Gochujang Pt.2 promotion: 268 recipes, 164 sources, 203 inbox items, 42 candidates, 44 evidence rows, 69 culinary concepts."
-    - "Aaron & Claire pilot statuses are now 18 promoted, 4 duplicate, and 3 needs_review."
+    - "Fresh live counts after Jaengban Jjajang promotion: 269 recipes, 166 sources, 203 inbox items, 42 candidates, 44 evidence rows, 71 culinary concepts."
+    - "Aaron & Claire pilot statuses are now 19 promoted, 4 duplicate, and 2 needs_review; both remaining needs_review rows are intentional holds."
     - "Firecrawl successfully fetched https://aaronandclaire.com/garlic-butter-rice/ with creator-page title, author, ingredient/procedure content, 6 servings, 10-minute prep, 30-minute cook, freezer-friendly claim, source cuisine label Asian, and embedded YouTube link."
     - "Garlic Butter Rice deduped as unique versus existing Rice pilaf and other rice recipes, then auto-promoted under the direct-submission policy."
     - "Garlic Butter Rice recipe ID 3f1420c2-2cc2-4fdd-9823-fba340fdd65b; primary concepts Garlic and Butter; cuisine NULL; dish Príloha; preparation Varené; Vhodné na mrazenie tag."
@@ -176,6 +195,9 @@ verification:
     - "Cohort item 9 completed after Firecrawl creator-page re-resolution: Gamja Jorim, Gochujang Fried Rice, Gochujang Stir-Fried Noodles, and Gochujang Chicken Rice Bowl promoted as unique recipes."
     - "New Zemiaky culinary concept created as ingredient; Gamja Jorim uses Zemiaky + Gochujang primary concepts without writing legacy main_ingredient."
     - "Gochujang Fried Rice stores protein=Hovädzie mäso and 1 serving; Gochujang Stir-Fried Noodles stores protein=Bravčové mäso, provisional base_component=Udon, and 1 serving; Gochujang Chicken Rice Bowl stores protein=Kuracie mäso and keeps creator 2-3 servings as candidate text rather than forcing an integer."
+    - "Cohort item 10 completed: Firecrawl showed the source is specifically Jaengban Jjajang; after explicit approval it was promoted as Jaengban Jjajang (Jjajangmyeon), recipe ID 2168e9a0-d9e0-4e35-b31e-da97f25fad3a."
+    - "Jaengban Jjajang stores Kórejská cuisine, Bravčové mäso protein, Wok preparation, 2 servings, 15-minute prep and 20-minute cook, with primary Chunjang and secondary Morské plody concepts; preference_status is adaptable."
+    - "New Chunjang and Morské plody culinary concepts created."
     - "Facebook Reel 1122400106794669 was previously held on failed_access, then resolved from user-supplied manual_context and promoted as Bulgur Meatball Noodle Soup without guessing unsupported cuisine/protein."
     - "Repository concept-first ingredient model and protein/key-concept overlap rules remain documented on main."
 
