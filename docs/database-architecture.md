@@ -122,17 +122,25 @@ Do not use `main_ingredient` as a default place for a starch/base merely because
 
 `side_dish` remains an actual accompaniment served with the recipe. It must not be repurposed to represent an integrated rice/noodle base.
 
-The Aaron & Claire creator pilot exposed a missing modeling distinction for integrated starch/noodle bases. During the pilot, unresolved candidates may carry a provisional `base_component` field inside `candidate_data` (for example `Ryža` or `Rezance`). This is **not yet a first-class database column or lookup**. The post-pilot audit will decide whether base/component semantics belong in a dedicated lookup or in the culinary-concept layer.
+The Aaron & Claire creator pilot exposed a missing modeling distinction for integrated starch/noodle bases. The post-pilot decision is **not** to add a dedicated `base_component` column or lookup.
+
+Approved structural bases are represented in the culinary-concept layer through `recipe_concepts.role = 'main_component'`. Examples include rice, noodles, udon, pasta, or another integrated structural component. Candidate JSON may still carry a provisional `base_component` extraction hint before promotion, but the canonical recipe representation is the concept bridge.
+
+This keeps structural-base semantics queryable without creating another parallel taxonomy axis and preserves `side_dish` for actual accompaniments.
 
 ### Specific ingredients and forms
 
-Concrete or reusable concepts such as `Mleté mäso`, `Gochujang`, `Italian Sausage`, or future `Guanciale` belong in `culinary_concepts` / `recipe_concepts` when useful for retrieval. Recipe tags remain properties of the dish, not an ingredient catalogue.
+Concrete or reusable concepts such as `Mleté mäso`, `Gochujang`, `Italian Sausage`, `Chunjang`, or future `Guanciale` belong in `culinary_concepts` / `recipe_concepts` when useful for retrieval. Recipe tags remain properties of the dish, not an ingredient catalogue.
+
+The concept layer may also preserve a meaningful secondary ingredient that does not fit the single coarse protein axis. For example, a mixed-protein recipe may keep `protein = Bravčové mäso` while linking `Morské plody` as a secondary component concept.
 
 ## Provenance model
 
 A recipe can have multiple sources. A shared source is also the grouping mechanism for multiple recipes extracted from the same video or article. For example, five recipes extracted from one compilation video all link to that same source; no provenance-specific recipe tag is required.
 
-Creator identity is currently stored textually in `sources.author`. A normalized Creator entity is intentionally deferred until repeated creator/channel-scale processing proves that the extra model is useful.
+Creator identity is currently stored textually in `sources.author`. The completed creator-scale pilot did not establish a need for a normalized Creator entity, so that normalization remains deferred.
+
+Source intent is also intentionally not normalized yet. Ingestion may store source-level semantics such as recipe, multi_recipe, technique_demo, ingredient_explainer, learning_content, or nonrecipe in `recipe_inbox.structured_data` while more examples accumulate.
 
 ## Access and security
 
