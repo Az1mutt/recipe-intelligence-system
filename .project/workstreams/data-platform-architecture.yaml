@@ -11,12 +11,13 @@ status: "active"
 phase: "agent-readiness-audit"
 
 current_gate: >
-  The bounded Aaron & Claire creator-scale ingestion pilot has completed all clean
-  reviewable dispositions. Nineteen new candidates were promoted, four were handled
-  as duplicates, and two candidates remain as deliberate holds rather than failed
-  work: Miso Ramen for a dedicated ramen-domain review and the partial 2024
-  Gochujang Noodles source for identity resolution. Stop creator expansion now and
-  complete the Agent Contract v1 readiness audit before any broader autonomous crawl.
+  Agent Contract v1 post-pilot audit is complete at the evidence/behavior level.
+  The contract passes for guarded autonomy: Discovery and deterministic Promotion
+  are suitable for automation; Resolver can operate autonomously behind a narrow
+  service boundary with truthful partial/failure states; Classification and QA
+  require strong reasoning and escalation rules. Before implementation, Igor should
+  approve the proposed v1.1 semantic/authority decisions, especially base-component
+  representation and autonomous concept-creation boundaries.
 
 current_state: >
   Supabase is ACTIVE_HEALTHY. The Aaron & Claire Agent Contract v1 pilot contains
@@ -69,12 +70,15 @@ current_state: >
   needs_review rows are the intentional Miso Ramen and 2024 Gochujang Noodles holds.
 
 exact_next_action: >
-  Run the post-pilot Agent Contract v1 readiness audit before expanding creator
-  ingestion. Review each role for what proved mechanical versus reasoning-heavy,
-  define the autonomous Resolver Service boundary including Firecrawl as backend
-  infrastructure, identify mandatory human-approval points, and capture model/data
-  decisions that must be settled before autonomous operation. Keep Miso Ramen and
-  the partial 2024 Gochujang Noodles candidate as explicit holds during the audit.
+  Review and approve/revise the Agent Contract v1.1 recommendations from the
+  completed audit. Proposed decisions: represent integrated bases through
+  recipe_concepts role=main_component rather than a new base_component column;
+  keep source intent in structured_data for the next iteration; allow Classification
+  to propose new culinary concepts while strong QA approves straightforward
+  evidence-backed concepts and escalates semantic/modeling novelty; keep controlled
+  taxonomy seed creation specialist-owned; use guarded promotion authority by
+  review policy. After approval, update the authoritative contract documentation
+  through the Change/Review GitHub lane and define the Resolver Service v1 interface.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -136,7 +140,7 @@ important_open_loops:
       additional authentic sources before locking ramen-specific taxonomy.
   - "Run deterministic Promotion Executor only for approved dispositions."
   - "Resolve or hold the 2024 Gochujang Noodles identity safely."
-  - "Perform post-pilot Agent Contract v1 audit before expanding the channel crawl."
+  - "Apply the approved post-pilot Agent Contract v1.1 decisions to authoritative documentation before expanding the channel crawl."
   - >
       Measure which roles proved mechanical vs which required strong reasoning or
       human review, including partial-source, manual-context, and Firecrawl-resolved cases.
@@ -155,17 +159,15 @@ important_open_loops:
 portfolio:
   milestone: true
   signal: >
-    Recipe Intelligence has exercised all five conceptual Agent Contract v1 roles,
-    recovered an inaccessible social source through manual_context, and now validated
-    Firecrawl as a practical generic-web acquisition backend in the supervised
-    Resolver flow. This reduces creator-page extraction friction while preserving
-    provenance and leaves the future autonomous interface clean: agents can call a
-    narrow Resolver service rather than own Firecrawl credentials directly. The
-    creator-scale pilot has now completed all clean reviewable dispositions. The
-    remaining proof point is the post-pilot readiness audit itself: converting the
-    observed supervised workflow into explicit autonomous boundaries, approval gates,
-    and a Resolver-service implementation plan without pretending the agent runtime
-    already exists.
+    Agent Contract v1 has passed its bounded post-pilot readiness audit for guarded
+    autonomy. Live invariants show no duplicate inbox source identities, no duplicate
+    candidate keys, no promoted candidate without a recipe/source link, no partial
+    source without an explicit error, no possible_duplicate or validation-needs-review
+    candidate promoted, and no duplicate disposition without a matched recipe.
+    Discovery, Resolver acquisition, and deterministic Promotion boundaries are
+    validated; semantic Classification/QA remain the deliberate strong-reasoning
+    layer. The next value step is contract v1.1 decisions and implementation, not
+    another manual creator batch.
 
 stale_or_unknown:
   - >
@@ -200,6 +202,9 @@ verification:
     - "New Chunjang and Morské plody culinary concepts created."
     - "Facebook Reel 1122400106794669 was previously held on failed_access, then resolved from user-supplied manual_context and promoted as Bulgur Meatball Noodle Soup without guessing unsupported cuisine/protein."
     - "Repository concept-first ingredient model and protein/key-concept overlap rules remain documented on main."
+    - "Post-pilot invariant audit: 0 duplicate pilot inbox source_refs; 0 duplicate (inbox_id,candidate_index) keys; 0 promoted candidates missing promoted_recipe_id; 0 promoted candidates missing a recipe_sources link; 0 partial sources without resolution_error; 0 possible_duplicate candidates promoted; 0 validation=needs_review candidates promoted; 0 duplicate candidates missing matched_recipe_id."
+    - "Pilot new-discovery outcomes are 19 promoted, 4 duplicate, and 2 intentional holds; the previously known Ssamjang control contributes 3 additional promoted candidates."
+    - "Audit verdict: Agent Contract v1 is suitable for guarded autonomy, not unrestricted bulk auto-promotion."
 
 sync:
   status: "synced"
