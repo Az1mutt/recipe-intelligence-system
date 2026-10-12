@@ -119,6 +119,8 @@ The service owns provider selection, credentials, rate limits, caching, retries,
 
 All adapters normalize into `recipe_inbox_evidence` and truthful resolver state. Firecrawl is therefore infrastructure behind the Resolver boundary, not a general-purpose credential exposed to every reasoning agent.
 
+The concrete request/response, adapter, retry, idempotency, error, caching, and security contract is defined in [Resolver Service v1](resolver-service-v1.md).
+
 Preferred YouTube order:
 
 1. metadata,
