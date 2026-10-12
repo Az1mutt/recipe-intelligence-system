@@ -197,6 +197,8 @@ Acquisition providers are implementation details behind a narrow resolver servic
 
 The resolver service is expected to choose among source-specific acquisition, Firecrawl-backed generic web acquisition, supported social/browser fallbacks, and explicit manual context. Every path must normalize evidence into `recipe_inbox_evidence` and preserve truthful partial/failure state.
 
+See [Resolver Service v1](resolver-service-v1.md) for the implementable domain interface and adapter contract.
+
 ## Validated acceptance cases
 
 ### Resolved multi-recipe YouTube source
