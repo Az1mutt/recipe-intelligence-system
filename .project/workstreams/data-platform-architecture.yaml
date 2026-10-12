@@ -11,14 +11,13 @@ status: "active"
 phase: "agent-readiness-audit"
 
 current_gate: >
-  Agent Contract v1.1 is approved and merged as the guarded-autonomy implementation
-  specification. The post-pilot semantic and authority decisions are now documented:
-  structural bases use recipe_concepts role=main_component rather than a new column;
-  source intent remains in recipe_inbox.structured_data; Classification may propose
-  culinary concepts and strong QA may approve straightforward evidence-backed ones;
-  controlled taxonomy/model novelty remains specialist-owned; promotion authority
-  follows review_policy. The next gate is implementation design for Resolver Service
-  v1 and the deterministic Promotion Executor contract.
+  Resolver Service v1 is now specified and merged as the implementation contract for
+  acquisition. The domain interface is resolve_inbox_item(inbox_id); provider choice,
+  credentials, retries, caching, and evidence normalization remain inside the service.
+  Firecrawl is the generic-web backend, YouTube/source-specific resolution is a
+  dedicated adapter path, and a social adapter boundary is reserved without yet
+  selecting an Instagram/Facebook acquisition implementation. The next gate is a
+  focused Instagram/Facebook acquisition spike followed by implementation sequencing.
 
 current_state: >
   Supabase is ACTIVE_HEALTHY. The Aaron & Claire Agent Contract v1 pilot contains
@@ -71,13 +70,13 @@ current_state: >
   needs_review rows are the intentional Miso Ramen and 2024 Gochujang Noodles holds.
 
 exact_next_action: >
-  Define Resolver Service v1 as an implementable domain interface: request/response
-  contract, adapter selection rules, evidence normalization, idempotency, retry and
-  caching behavior, provider/credential boundaries, Firecrawl generic-web adapter,
-  YouTube/source-specific adapter expectations, social/manual fallbacks, and failure
-  semantics. In parallel, define the deterministic Promotion Executor input,
-  preconditions, transaction boundary, approved-disposition versioning, and
-  post-write verification. Do not implement autonomous runtime/orchestration yet.
+  Run an Instagram/Facebook social-acquisition spike against current platform/API
+  constraints and practical provider/browser options. Determine which legitimate
+  path can resolve direct public Reel/post submissions into normalized evidence,
+  what authentication/session handling is required, whether creator-owned metadata,
+  caption text, media/audio or linked pages can be retrieved reliably, and what
+  fallback/manual-context behavior is needed. Select the social adapter strategy
+  before implementing Resolver Service v1 runtime.
 
 blockers:
   - "No current Supabase availability or architecture blocker."
@@ -182,6 +181,10 @@ stale_or_unknown:
       its future autonomous deployment/API hosting, credential storage, budgeting,
       and rate-limit policy are not yet implemented.
   - >
+      Instagram/Facebook acquisition implementation is intentionally unresolved.
+      Resolver Service v1 reserves the social adapter boundary, but the provider/API
+      or browser strategy must be chosen from a dedicated current-platform spike.
+  - >
       Exact identity of the 2024 Gochujang Noodles source remains unresolved.
 
 verification:
@@ -205,6 +208,9 @@ verification:
     - "Post-pilot invariant audit: 0 duplicate pilot inbox source_refs; 0 duplicate (inbox_id,candidate_index) keys; 0 promoted candidates missing promoted_recipe_id; 0 promoted candidates missing a recipe_sources link; 0 partial sources without resolution_error; 0 possible_duplicate candidates promoted; 0 validation=needs_review candidates promoted; 0 duplicate candidates missing matched_recipe_id."
     - "PR #13 Agent Contract v1.1 guarded autonomy merged to main as squash commit e4d945fcf2f6f806b3a4de8553320ffea67577c0."
     - "Authoritative docs updated: docs/agent-contract-v1.md, docs/ingestion-contract-v1.md, and docs/database-architecture.md."
+    - "PR #14 Specify Resolver Service v1 merged to main as squash commit f187cb46f4db8cd46342517968ff2d05b1a7c8f6."
+    - "docs/resolver-service-v1.md now defines resolve_inbox_item(inbox_id), adapter routing, normalized evidence, retries, caching, security, observability, acceptance tests, and a reserved social adapter."
+    - "Live schema verification found unique recipe_inbox.source_ref and unique recipe_candidates(inbox_id,candidate_index), but no DB-level unique evidence fingerprint; concurrency hardening is planned before parallel resolver workers."
     - "Pilot new-discovery outcomes are 19 promoted, 4 duplicate, and 2 intentional holds; the previously known Ssamjang control contributes 3 additional promoted candidates."
     - "Audit verdict: Agent Contract v1 is suitable for guarded autonomy, not unrestricted bulk auto-promotion."
 
