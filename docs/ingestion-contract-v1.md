@@ -152,11 +152,13 @@ A duplicate candidate may enrich an existing recipe with a new source, tags, con
 
 ### Direct explicit user submission
 
-For a direct instruction such as "add this video", use `auto_after_validation` when appropriate. The user has already approved the intake intent, so a redundant second approval should not be required after validation. Dedupe and safety/data-quality gates still apply.
+For a direct instruction such as "add this video", use `auto_after_validation` when appropriate. The user has already approved the intake intent, so a redundant second approval should not be required after validation. Dedupe, preference, safety, and data-quality gates still apply. If any escalation condition is triggered, the candidate leaves the automatic path.
 
 ### Discovery, channel, playlist, and legacy backlog
 
 Use `explicit_review`. Broad discovery is not permission to promote every candidate automatically.
+
+Discovery/channel items may still proceed autonomously through acquisition, candidate extraction, and QA preparation. New identities, meaningful variants, partial-source cases, preference adaptations, and other consequential dispositions stop in the review queue. Exact-duplicate source-link enrichment may later become an autonomous low-risk path once deterministic executor preconditions are implemented.
 
 ### Hold
 
@@ -175,10 +177,25 @@ Use `hold` for intentionally parked items.
 - Ground form does not replace a known species; `Mleté mäso` can be a culinary concept.
 - Key ingredients are modeled primarily as one-to-many `culinary_concepts` / `recipe_concepts`, typically with `importance = primary`; Classification should usually identify 1–3 key ingredient concepts when the evidence supports them.
 - The legacy `main_ingredient` field remains for compatibility but must not be force-filled by new ingestion and is no longer the preferred source of truth for ingredient identity.
-- Integrated rice/noodle/starch bases are distinct from `side_dish`. During the Aaron & Claire pilot they may be carried provisionally in candidate JSON as `base_component` until the post-pilot data-model decision.
+- Integrated rice/noodle/starch bases are distinct from `side_dish`. Post-pilot v1.1 represents an approved structural base through `recipe_concepts` with `role = main_component` instead of adding a dedicated `base_component` column. Candidate JSON may still carry `base_component` as an extraction hint before promotion.
 - Specific reusable ingredients such as `Gochujang`, `Italian Sausage`, or future `Guanciale` belong in culinary concepts when useful for retrieval.
+- Classification may propose new culinary concepts. Strong QA may approve straightforward evidence-backed concepts that fit existing concept types and semantics; controlled lookup seeds and any concept-model novelty remain specialist-owned.
 - Tags describe properties of the dish, not source provenance or an unrestricted ingredient vocabulary.
 - Prep time, cook time, servings, and similar fields are optional enrichment and are populated only when evidence supports them.
+
+## Source intent
+
+Source intent remains stored in `recipe_inbox.structured_data` in v1.1 rather than becoming a new normalized table/lookup.
+
+Useful fields may include `primary_content_type`, `secondary_content_type`, and `content_form`. Expected values include recipe, multi_recipe, technique_demo, ingredient_explainer, learning_content, and nonrecipe.
+
+Source intent describes what the source primarily does; it does not determine candidate count. A technique-first source may still yield a recipe candidate, while a nonrecipe source may legitimately yield zero.
+
+## Resolver service boundary
+
+Acquisition providers are implementation details behind a narrow resolver service/tool. Reasoning agents should call a domain interface such as `resolve_inbox_item(inbox_id)` rather than receive broad provider credentials.
+
+The resolver service is expected to choose among source-specific acquisition, Firecrawl-backed generic web acquisition, supported social/browser fallbacks, and explicit manual context. Every path must normalize evidence into `recipe_inbox_evidence` and preserve truthful partial/failure state.
 
 ## Validated acceptance cases
 
@@ -201,11 +218,26 @@ The batch validated multiple failure modes and outcomes:
 - Cheesecake water-bath article: correctly classified as non-recipe technique content and produced zero recipe candidates.
 - Tasty "One-Pot Vegetarian Meals": source remained partial; one `One-Pot Pasta Primavera` candidate was recovered via `external_reference`, then safely merged into existing `Pasta primavera` without inventing unsupported times, servings, or ingredients.
 
-This closes the isolated/batch-ingestion validation gate. The next technical proof point is a bounded creator/channel-scale pilot with explicit review and no bulk auto-promotion.
+This closed the isolated/batch-ingestion validation gate and led into the bounded creator/channel-scale pilot.
 
+
+### Aaron & Claire creator-scale pilot — completed 2026-10-12
+
+The creator-scale pilot validated guarded autonomy rather than unrestricted bulk auto-promotion. Among newly discovered pilot candidates, 19 were promoted, 4 were handled as duplicates, and 2 remain deliberate holds. The Ssamjang control contributed 3 additional already-known promoted candidates.
+
+The pilot demonstrated:
+
+- durable per-source checkpoints and idempotent candidate identity;
+- truthful partial-source handling;
+- duplicate enrichment without duplicate recipe identity;
+- multi-recipe extraction;
+- preference adaptation;
+- concept-first ingredient semantics;
+- Firecrawl-backed creator-page acquisition;
+- escalation of unresolved identity and domain-model cases instead of guessing.
 
 ## Agent execution contract
 
-The ingestion contract defines the data-quality and provenance guarantees. The role boundaries, write permissions, escalation rules, model-strength policy, retry behavior, and Aaron & Claire creator-pilot protocol are defined separately in [Agent Contract v1](agent-contract-v1.md).
+The ingestion contract defines the data-quality and provenance guarantees. The role boundaries, write permissions, escalation rules, model-strength policy, retry behavior, guarded promotion authority, and Resolver Service boundary are defined separately in [Agent Contract v1.1](agent-contract-v1.md).
 
-Agent Contract v1 is currently a design specification to be validated through the creator-scale pilot; it does not imply that autonomous ingestion workers are already implemented.
+Agent Contract v1.1 is a validated behavioral specification for implementation. Autonomous ingestion workers/services are still planned, not yet implemented.
