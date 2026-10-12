@@ -237,7 +237,6 @@ Not allowed without escalation:
 - create a new cuisine/protein/main_ingredient/tag or other controlled lookup seed;
 - create a new concept type, relationship type, aggregate/category semantics, or other concept-model rule;
 - redefine taxonomy semantics;
-- create a new relationship type;
 - introduce a normalized Creator entity;
 - approve a meaningful identity split when evidence is genuinely ambiguous;
 - promote a candidate during the creator pilot without explicit review outcome.
