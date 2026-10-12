@@ -1,12 +1,12 @@
-# Agent Contract v1
+# Agent Contract v1.1
 
 ## Status
 
-**Design contract, not yet an implemented autonomous service.**
+**Validated behavioral contract for guarded autonomy; autonomous workers/services are not yet implemented.**
 
-This document defines how Recipe Intelligence ingestion work should be split between specialized agents once the workflow is automated. It is based on the already validated [Ingestion contract v1](ingestion-contract-v1.md).
+This document defines how Recipe Intelligence ingestion work is split between specialized agents. It is based on the validated [Ingestion contract v1](ingestion-contract-v1.md) and the completed Aaron & Claire creator-scale pilot.
 
-The first proving ground for this contract is a bounded **Aaron & Claire creator-scale pilot**. During that pilot, the current technical specialist chat may temporarily act as orchestrator and senior reviewer while each step is executed according to the same boundaries future agents must follow.
+The pilot validated the role boundaries and safety model, but it did **not** authorize unrestricted bulk auto-promotion. The implementation target is guarded autonomy: routine acquisition and deterministic execution should be automated, while semantic ambiguity, taxonomy/model changes, and higher-risk dispositions remain behind strong QA and escalation gates.
 
 ## Core principle
 
@@ -64,7 +64,7 @@ Promotion Executor
 recipes + sources + bridges + concepts
 ```
 
-The first creator-scale pilot keeps **explicit review** for newly discovered channel content. Passing this pilot is not permission for bulk auto-promotion.
+The creator-scale pilot used **explicit review** for newly discovered channel content. Post-pilot v1.1 keeps that conservative default for discovery/channel ingestion while allowing narrower autonomous paths where the review policy and disposition are already approved.
 
 ## Roles
 
@@ -105,6 +105,19 @@ A rerun must reuse the same intake item instead of creating a duplicate.
 ### 2. Resolver Agent
 
 Purpose: acquire the strongest legitimate evidence available without inventing missing source content.
+
+#### Resolver Service v1 boundary
+
+Agents should not depend directly on Firecrawl or other provider-specific credentials. The target runtime boundary is a narrow resolver service/tool such as `resolve_inbox_item(inbox_id)` or equivalent.
+
+The service owns provider selection, credentials, rate limits, caching, retries, and evidence normalization. Expected adapters include:
+
+- YouTube/source-specific acquisition;
+- generic web acquisition through Firecrawl;
+- social/browser fallback where supported;
+- explicit manual-context fallback.
+
+All adapters normalize into `recipe_inbox_evidence` and truthful resolver state. Firecrawl is therefore infrastructure behind the Resolver boundary, not a general-purpose credential exposed to every reasoning agent.
 
 Preferred YouTube order:
 
@@ -165,7 +178,7 @@ Current semantic rules:
 - key ingredients are represented in the candidate `concepts` list and, after approval, in `recipe_concepts` with `importance = primary`; ingredient-like concept types may include ingredient, stock, sauce, component, seasoning, condiment, and dough/batter;
 - the legacy `main_ingredient` field may remain populated for historical/compatibility reasons, but new ingestion should not force it and should not treat it as the canonical key-ingredient model;
 - `side_dish` is reserved for an actual accompaniment, not an integrated starch/noodle base;
-- while the creator pilot is evaluating the missing base dimension, candidate JSON may use provisional `base_component` values such as `Ryža` or `Rezance`; agents must not assume this is already a stable schema field;
+- integrated structural bases such as rice, noodles, udon, pasta, or similar components should be represented after approval through `recipe_concepts` with `role = main_component` rather than by adding a new dedicated `base_component` column; candidate JSON may still carry `base_component` as an extraction hint before promotion;
 - forms such as `Mleté mäso` and specific reusable ingredients/condiments such as `Gochujang`, `Italian Sausage`, or `Guanciale` belong in culinary concepts when useful;
 - tags describe properties of the dish rather than arbitrary ingredients or provenance;
 - prep/cook time, servings, and similar fields remain NULL when unsupported;
@@ -181,6 +194,7 @@ Not allowed:
 
 - write to `recipes`;
 - create new controlled lookup seeds automatically;
+- persist a newly proposed culinary concept directly into the canonical concept vocabulary without QA approval;
 - silently turn a `possible_duplicate` into a new recipe;
 - reinterpret unsupported details from general culinary knowledge as source facts.
 
@@ -213,11 +227,15 @@ Allowed writes:
 - matched recipe reference;
 - preference status/notes;
 - review notes;
-- approval/rejection disposition.
+- approval/rejection disposition;
+- approval of straightforward evidence-backed culinary concepts proposed by Classification.
+
+A strong QA agent may approve a new culinary concept when it is a direct, reusable concept supported by the evidence and fits an existing concept type/role without changing model semantics. Examples include ordinary ingredients or established condiments such as Garlic, Panko, Chunjang, or a clearly named reusable component.
 
 Not allowed without escalation:
 
-- create a new cuisine/protein/main_ingredient/tag seed;
+- create a new cuisine/protein/main_ingredient/tag or other controlled lookup seed;
+- create a new concept type, relationship type, aggregate/category semantics, or other concept-model rule;
 - redefine taxonomy semantics;
 - create a new relationship type;
 - introduce a normalized Creator entity;
@@ -227,6 +245,8 @@ Not allowed without escalation:
 ### 5. Promotion Executor
 
 Purpose: apply an already-approved disposition deterministically.
+
+The implementation target is a reusable transactional executor/RPC/service, not free-form SQL generation by a reasoning model. A caller should submit a candidate plus an approved disposition/version; the executor checks preconditions, applies only the approved writes, and verifies the post-write state.
 
 This should contain as little open-ended reasoning as possible.
 
@@ -255,6 +275,13 @@ Not allowed:
 
 If the expected target row changed between QA and promotion, promotion must stop and return to QA.
 
+#### Promotion authority by review policy
+
+- `auto_after_validation`: direct explicit user submissions may proceed through deterministic promotion when validation/dedupe/preference gates are clean and no escalation condition is present.
+- `explicit_review`: discovery/channel/playlist items may run autonomously through Discovery, Resolver, Classification, and QA, but new identities, meaningful variants, partial-source cases, preference adaptations, and other consequential dispositions remain in a review queue until explicitly approved.
+- `hold`: no promotion.
+- Exact-duplicate source-link enrichment is a candidate for later autonomous execution once its deterministic preconditions are implemented and verified; v1.1 does not require this optimization.
+
 ## Controlled taxonomy vs open-ended concepts
 
 Agent v1 distinguishes controlled lookup dimensions from the more extensible culinary knowledge layer.
@@ -272,7 +299,7 @@ Controlled dimensions include, at minimum:
 
 A missing controlled value is an **escalation**, not permission to invent a new seed.
 
-Culinary concepts are more extensible but still evidence-driven. During the first creator pilot, creation of a materially new ingredient concept should be surfaced in review so vocabulary quality can be observed before wider automation.
+Culinary concepts are more extensible but still evidence-driven. Classification may propose new concepts. Strong QA may approve straightforward evidence-backed concepts that fit existing concept types and semantics. Controlled lookup creation and any concept-model novelty remain specialist-owned escalation points.
 
 ## Escalation conditions
 
@@ -362,6 +389,14 @@ Expected behavior:
 - promotion must be safe to re-check before writing;
 - completed sources are not reopened unless explicitly requested.
 
+## Source intent
+
+Source intent is useful but remains an ingestion-layer concern in v1.1 rather than a new normalized schema dimension.
+
+Resolver/Classification may store fields such as `primary_content_type`, `secondary_content_type`, or `content_form` in `recipe_inbox.structured_data` using values such as recipe, multi_recipe, technique_demo, ingredient_explainer, learning_content, or nonrecipe.
+
+This lets the system distinguish what a source primarily does from which recipe candidates can be extracted. The SAMUKICHI technique-first case demonstrated that a source can teach a technique while still yielding a recipe candidate. A future source-to-concept teaches/demonstrates relationship remains a separate modeling decision.
+
 ## Pilot stop conditions
 
 The Aaron & Claire pilot should pause for review rather than continue blindly if:
@@ -412,9 +447,36 @@ Pilot evaluation should answer:
 - whether the Promotion Executor can remain fully deterministic;
 - whether a larger channel crawl is justified.
 
-## Success criteria for Agent Contract v1
+## Post-pilot audit result — 2026-10-12
 
-The contract is considered validated only when the pilot demonstrates:
+**Verdict: PASS for guarded autonomy.**
+
+The bounded Aaron & Claire pilot completed all clean reviewable dispositions. New-discovery outcomes were 19 promoted, 4 duplicate, and 2 intentional holds; the previously known Ssamjang control contributed 3 additional promoted candidates.
+
+Database invariant checks after the pilot found:
+
+- 0 duplicate pilot inbox source identities;
+- 0 duplicate `(inbox_id, candidate_index)` keys;
+- 0 promoted candidates without a promoted recipe;
+- 0 promoted candidates without a recipe-source link;
+- 0 partial sources without `resolution_error`;
+- 0 `possible_duplicate` candidates promoted;
+- 0 `validation_status = needs_review` candidates promoted;
+- 0 duplicate dispositions without a matched recipe.
+
+Observed role readiness:
+
+- **Discovery:** suitable for autonomous execution inside approved scope.
+- **Resolver:** suitable for autonomous acquisition behind the narrow Resolver Service boundary; partial/failure states must remain explicit.
+- **Classification:** suitable for autonomous candidate production using a strong reasoning model, but not canonical recipe writes.
+- **QA / Review:** suitable for strong-model autonomous review of routine cases, with mandatory escalation for ambiguity, controlled taxonomy changes, concept-model novelty, and other consequential semantic changes.
+- **Promotion Executor:** suitable for deterministic autonomous execution after an allowed/approved disposition, implemented as a transactional executor rather than open-ended reasoning.
+
+The pilot also validated that richer creator-page evidence can materially change identity/classification decisions: e.g. Firecrawl resolution corrected the Gochujang Pt.2 details and identified the Jjajangmyeon source specifically as a Jaengban Jjajang variant.
+
+## Success criteria for Agent Contract v1.1
+
+The contract is considered validated when the pilot demonstrates:
 
 - no provenance-role violations;
 - no invented recipe facts;
@@ -434,9 +496,9 @@ The goal is to move routine work to agents while reserving human/senior-model at
 
 Until autonomous agents are implemented:
 
-- this specialist workstream owns the contract;
-- the current chat may simulate/orchestrate the roles during the pilot;
-- Project OS/Core owns cross-project agent architecture;
+- this specialist workstream owns the domain contract and Resolver/Promotion implementation specification;
+- the current chat may continue to simulate/orchestrate the roles for targeted validation;
+- Project OS/Core owns cross-project agent runtime/orchestration architecture;
 - Recipe Intelligence owns the domain-specific rules described here.
 
-Once the pilot is complete, this contract should be revised from observed failures and then used as the implementation specification for the first real ingestion-agent workflow.
+Agent Contract v1.1 is now the implementation specification for the first guarded ingestion-agent workflow. The next implementation step is to define the concrete Resolver Service v1 interface and deterministic Promotion Executor contract without changing the validated role boundaries.
