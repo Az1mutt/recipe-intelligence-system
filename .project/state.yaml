@@ -4,31 +4,41 @@ state_scope: "project_rollup"
 
 project:
   name: "Recipe Intelligence System"
-  owner: "Project OS rollup"
+  owner: "Core Project Brain rollup"
 
 status: "active"
-phase: "batch-ingestion-validation"
+phase: "agent-readiness-audit"
 
 current_gate: >
-  Prove that the technical ingestion contract remains reliable across a small
-  heterogeneous batch of real backlog URLs before any creator/channel-scale crawl.
+  Agent Contract v1.1 and Resolver Service v1 are specified and merged. The next
+  project gate is a focused Instagram/Facebook social-acquisition spike to choose
+  a legitimate social adapter strategy before implementing Resolver Service v1
+  runtime. The reserved Product & Intelligence workstream remains unassigned and
+  does not block the active technical workstream.
 
 current_state: >
-  Recipe Intelligence currently has one active specialist-owned workstream:
-  Data & Platform Architecture. It owns Supabase/PostgreSQL, schema, ingestion
-  contracts, resolver/evidence/candidate flows, security and technical
-  implementation. A separate Product & Intelligence boundary is reserved for
-  future use if/when a dedicated specialist chat or agent-product design
-  workstream actually exists, but it is not an active dependency or blocker.
-  The manual recipes chat is currently a user/curation workflow, not a Project
-  State owner.
+  Data & Platform Architecture is the single active specialist-owned workstream.
+  The creator-scale Aaron & Claire pilot has dispositioned all clean candidates:
+  19 promoted, 4 duplicate and 2 intentional needs_review holds. Live counts at
+  the latest verification are 269 recipes, 166 sources, 203 inbox items,
+  42 candidates, 44 evidence rows and 71 culinary concepts. Agent Contract v1.1
+  now defines guarded-autonomy boundaries, and Resolver Service v1 defines the
+  acquisition interface resolve_inbox_item(inbox_id), adapter routing, evidence
+  normalization, retries, caching, security and observability. Firecrawl is
+  verified in supervised generic-web resolution but is not yet an autonomous
+  Resolver runtime. Product & Intelligence remains a future reserved boundary,
+  not an active dependency.
 
 exact_next_action: >
-  Continue the technical 5-10 URL batch validation in Data & Platform
-  Architecture. Do not initialize a separate Product & Intelligence workstream
-  until there is a real owner and meaningful ongoing work for it.
+  Run the Instagram/Facebook social-acquisition spike against current platform,
+  API and practical provider/browser constraints. Select the social adapter
+  strategy and fallback/manual-context behavior before implementing Resolver
+  Service v1 runtime.
 
-blockers: []
+blockers:
+  - "No current Supabase availability or architecture blocker."
+  - "Miso Ramen remains an intentional hold for a dedicated ramen-domain review."
+  - "The partial 2024 Gochujang Noodles source remains an intentional identity-resolution hold; neither hold blocks the current social-acquisition spike."
 
 workstreams:
   - id: "data-platform-architecture"
@@ -49,15 +59,17 @@ rollup_policy:
 portfolio:
   milestone: true
   signal: >
-    The project has a proven technical ingestion foundation and a clean future
-    boundary for product/agent-intelligence work without forcing a second active
-    workstream before it exists in practice.
+    Recipe Intelligence now demonstrates a guarded human-in-the-loop ingestion
+    architecture with a real creator-scale pilot, normalized evidence/candidate
+    flow, concept-first semantics, explicit ambiguity handling, Agent Contract
+    v1.1 and a specified Resolver Service boundary. The next portfolio value comes
+    from implementing and accepting the resolver runtime, not another manual batch.
 
 verification:
-  last_verified: "2026-09-09"
+  last_verified: "2026-10-12"
   sources:
     - ".project/workstreams/data-platform-architecture.yaml"
-    - "Project OS clarification: no dedicated Product & Intelligence specialist chat currently exists."
+    - ".project/workstreams/product-intelligence.yaml"
 
 sync:
   status: "synced"
